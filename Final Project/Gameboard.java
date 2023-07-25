@@ -62,7 +62,7 @@ public class Gameboard extends JPanel
       for(int r = 0; r < board.length; r++)
          for(int c = 0; c < board[0].length; c++)
          {
-            board[r][c] = new JLabel("B");
+            board[r][c] = new JLabel("     ");
             board[r][c].setFont(new Font("Arial", Font.BOLD, 50));
             board[r][c].setBackground(Color.WHITE);
             add(board[r][c]);
