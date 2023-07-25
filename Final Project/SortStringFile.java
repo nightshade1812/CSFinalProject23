@@ -36,5 +36,3 @@ public class SortStringFile
       return array;
    }
 }
-
-//hello there
