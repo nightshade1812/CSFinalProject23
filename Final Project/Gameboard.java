@@ -131,30 +131,35 @@ public class Gameboard extends JPanel
    /**
    *Checks if the word that the user inputs is equal to answer and will change the colors of Gameboard squares or display a winner message accordingly
    */
-   public void checkWord(String input, String answer)
+   public void checkWord(String input, String answerin)
    {
+      Keyboard k = new Keyboard();
+      
       if(checkWordValid(input)) {
-         input = input.toLowerCase();
+         answerin = answerin.toUpperCase();
          for(int i = 0; i < input.length(); i++) {
             char answerSelect = input.charAt(i);
-            char ans = answer.charAt(i);
+            char ans = answerin.charAt(i);
             if(answerSelect == ans) {
                board[row][i].setBackground(new Color(106, 170, 100));
                board[row][i].setForeground(Color.WHITE);
+               k.updateKeyboard("" + answerSelect, 2);
             }
             else if(answer.contains("" + answerSelect) && answerSelect != ans) {
                board[row][i].setBackground(new Color(201, 180, 88));
                board[row][i].setForeground(Color.WHITE);
+               k.updateKeyboard("" + answerSelect, 1);
             }
             else if(answerSelect != ans && !answer.contains("" + answerSelect)) {
                board[row][i].setBackground(new Color(120, 124, 126));
                board[row][i].setForeground(Color.WHITE);
+               k.updateKeyboard("" + answerSelect, 0);
             }
          }
          space = 0;
          row++;
          guess++;
-         if(input.equalsIgnoreCase(answer))
+         if(input.equalsIgnoreCase(answerin))
             winner("win");
          else if(guess == 6)
             winner("lose");
