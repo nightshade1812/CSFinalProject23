@@ -48,7 +48,7 @@ public class Gameboard extends JPanel
    /**
    *A scanner that will be used to search files for a certain word
    */
-   private Scanner answerSelect, lineCounter, wordFinder;
+   private Scanner answerSelect, wordFinder;
    
    /**
    *Creates a new Gameboard object with a JLabel matrix
@@ -62,7 +62,7 @@ public class Gameboard extends JPanel
       for(int r = 0; r < board.length; r++)
          for(int c = 0; c < board[0].length; c++)
          {
-            board[r][c] = new JLabel("     ");
+            board[r][c] = new JLabel("     ", SwingConstants.CENTER);
             board[r][c].setFont(new Font("Arial", Font.BOLD, 50));
             board[r][c].setBackground(Color.WHITE);
             add(board[r][c]);
@@ -103,7 +103,6 @@ public class Gameboard extends JPanel
    public boolean checkWordValid(String input)
    {
       try {
-         lineCounter = new Scanner(new File("guesses.txt"));
          wordFinder = new Scanner(new File("guesses.txt"));
       }
       catch(FileNotFoundException e) {
@@ -111,11 +110,9 @@ public class Gameboard extends JPanel
          System.exit(0);
       }
       int count = 0;
-      
-      while(lineCounter.hasNext())
-         count++;
-      String[] array = new String[count];
-      for(int i = 0; i < count; i++)
+   
+      String[] array = new String[12947];
+      for(int i = 0; i < 12947; i++)
          array[i] = wordFinder.nextLine();
          
       try {
@@ -242,18 +239,23 @@ public class Gameboard extends JPanel
          int keyCode = e.getKeyCode();
          String keyName = KeyEvent.getKeyText(keyCode);
          keyName = keyName.toUpperCase();
+         System.out.println(keyName);
          
-         if((keyName != "ENTER" && keyName != "BACKSPACE") && Searcher.linear(validKeys, keyName)) {
+         if(space == 5)
+            return;
+         if((!keyName.equals("BACKSPACE") && !keyName.equals("ENTER")) && Searcher.linear(validKeys, keyName)) {
             board[row][space].setText(keyName);
             space++;
             wordGuess = wordGuess + keyName;
          }
-         else if(keyName == "BACKSPACE") {
-            board[row][space - 1].setText(" ");
+         else if(keyName.equals("BACKSPACE")) {
+            if(space == 0)
+               return;
+            board[row][space - 1].setText("   ");
             space--;
             wordGuess = wordGuess.substring(0, wordGuess.length() - 1);
          }
-         else if(keyName == "ENTER")
+         else if(keyName.equals("ENTER"))
             checkWord(wordGuess, answer);
          else
             return;
