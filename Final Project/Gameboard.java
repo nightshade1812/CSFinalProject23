@@ -14,7 +14,7 @@ public class Gameboard extends JPanel
    *A JLabel matrix within a Gameboard instance, will display a word on each row
    */
    private JLabel[][] board;
-   
+   assignAnswer();
    /**
    *A string that stores the word to be guessed
    */
@@ -39,6 +39,11 @@ public class Gameboard extends JPanel
    */ 
    public void assignAnswer()
    {
+      int line = (int)(Math.random() * 2039 + 1);
+      Scanner temp = new Scanner("answers.txt");
+      for(int i = 0; i < line; i++)
+         answer = temp.next();
+      System.out.println(answer);
       //will randomly select a line in answers.txt and assign it to answer
    }
    
@@ -48,6 +53,15 @@ public class Gameboard extends JPanel
    */
    public boolean checkWordValid(String input)
    {
+      try {
+         if(input.length() != 5)
+            throw new StringBadLengthException("String is not five characters - try again");
+      }
+      catch(StringBadLengthException e) {
+         return false;
+      }
+      
+      
       //will check the input word against guesses.txt and determine if it is a word or not
       //also accounts for words of incorrect length
       
