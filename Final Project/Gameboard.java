@@ -255,6 +255,15 @@ public class Gameboard extends JPanel
       return board;
    }
    
+   /**
+   *Returns the current guess number
+   @return     int
+   */
+   public static int getGuess()
+   {
+      return guess;
+   }
+   
    //the key listener that we will use to update the board as keys are typed
    private class KeyDetector extends KeyAdapter
    {
