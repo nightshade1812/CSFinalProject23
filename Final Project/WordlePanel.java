@@ -13,25 +13,28 @@ public class WordlePanel extends JPanel
    @see Gameboard
    */
    private Gameboard gameboard;
+   
    /**
    *The WordlePanel' Scoreboard
    @see Scoreboard
    */
    private Scoreboard scoreboard;
+   
    /**
    *The WordlePanel' Keyboard
    @see Keyboard
    */
    private Keyboard keyboard;
+   
    /**
    *A JButton that resets the WordlePanel and its subpanels
    @see JButton
    */
    private JButton reset;
+   
    /**
    *An int that determines the amount of guesses in the game
-   */
-   
+   */   
    //guessLimit starts at 6, as is traditional for Wordle
    private int guessLimit = 6;
    
@@ -42,6 +45,8 @@ public class WordlePanel extends JPanel
    public WordlePanel()
    {
       //initializing the objects we will need
+      setLayout(new FlowLayout());
+      
       gameboard = new Gameboard();
       scoreboard = new Scoreboard();
       keyboard = new Keyboard();
@@ -49,7 +54,13 @@ public class WordlePanel extends JPanel
       
       //adding an action listener for the reset button
       reset.addActionListener(new ResetListener());
+      
+      add(gameboard);
+      add(scoreboard);
+      add(keyboard);
+      add(reset);
    }
+   
    /**
    *Resets the Gameboard and the Keyboard by calling their reset methods
    @see Gameboard.reset()
@@ -61,6 +72,7 @@ public class WordlePanel extends JPanel
       keyboard.reset();
       //all variables will be reset and the button will be disabled
    }
+   
    /**
    *Sets the amount of guesses per game to the input x
    @param x    assigns x to guessLimit
