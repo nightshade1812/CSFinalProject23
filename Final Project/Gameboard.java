@@ -21,6 +21,11 @@ public class Gameboard extends JPanel
    private String answer;
    
    /**
+   *A string that stores the current word being guessed
+   */
+   private String wordGuess;
+   
+   /**
    *An int that stores the amount of guesses used
    */
    private int guess;
@@ -36,12 +41,18 @@ public class Gameboard extends JPanel
    private int space;
    
    /**
+   *A string array that stores all valid key names
+   */
+   private String[] validKeys;
+   
+   /**
    *Creates a new Gameboard object with a JLabel matrix
    */
    public Gameboard()
    {
       board = new JLabel[6][5];
       assignAnswer();
+      fillValidKeyCodeArray(validKeys);
    }
   
    /**
@@ -102,12 +113,16 @@ public class Gameboard extends JPanel
             else if(temp != ans && !answer.contains("" + temp))
                board[row][i].setBackground(new Color(100, 100, 100));
          }
+         space = 0;
          guess++;
          if(input.equalsIgnoreCase(answer))
             winner();
          if(guess == 6)
             loser();
+         wordGuess = "";
       }
+      else
+         System.out.println("Invalid word. Please try again.");
    }
    
    /**
@@ -149,14 +164,63 @@ public class Gameboard extends JPanel
    
    }
    
+   /**
+   *Manually fills the array of valid key codes
+   */
+   public void fillValidKeyCodeArray(String[] arr)
+   {
+      validKeys = new String[28];
+      arr[0] = "Q";
+      arr[1] = "W";
+      arr[2] = "E";
+      arr[3] = "R";
+      arr[4] = "T";
+      arr[5] = "Y";
+      arr[6] = "U";
+      arr[7] = "I";
+      arr[8] = "O";
+      arr[9] = "P";
+      arr[10] = "A";
+      arr[11] = "S";
+      arr[12] = "D";
+      arr[13] = "F";
+      arr[14] = "G";
+      arr[15] = "H";
+      arr[16] = "J";
+      arr[17] = "K";
+      arr[18] = "L";
+      arr[19] = "Z";
+      arr[20] = "X";
+      arr[21] = "C";
+      arr[22] = "V";
+      arr[23] = "B";
+      arr[24] = "N";
+      arr[25] = "M";
+      arr[26] = "ENTER";
+      arr[27] = "BACKSPACE";
+   }
+   
    //the key listener that we will use to update the board as keys are typed
    private class KeyDetector extends KeyAdapter
    {
       public void keyPressed(KeyEvent e)
       {
-         //this keyPressed will add the character of the key pressed to the game board
-         //if enter is pressed, then it will check the entered word and enact that code
-         //if backspace is pressed, it will remove the last character unless it is on the first square
+         int keyCode = e.getKeyCode();
+         String keyName = KeyEvent.getKeyText(keyCode);
+         keyName = keyName.toUpperCase();
+         
+         if((keyName != "ENTER" || keyName != "BACKSPACE") && Searcher.binary(validKeys, keyName, 0, 28)) {
+            board[row][space].setText(keyName);
+            space++;
+            wordGuess = wordGuess + keyName;
+         }
+         else if(keyName == "BACKSPACE") {
+            board[row][space - 1].setText(" ");
+            space--;
+            wordGuess = wordGuess.substring(0, wordGuess.length() - 1);
+         }
+         else if(keyName == "ENTER")
+            checkWord(wordGuess, answer);
       }
    }
 }
