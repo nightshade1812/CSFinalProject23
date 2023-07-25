@@ -46,12 +46,20 @@ public class Gameboard extends JPanel
    private String[] validKeys;
    
    /**
+   *A scanner that will be used to search files for a certain word
+   */
+   private Scanner answerSelect, lineCounter, wordFinder;
+   
+   /**
    *Creates a new Gameboard object with a JLabel matrix
    */
    public Gameboard()
    {
       board = new JLabel[6][5];
+      answer = "";
+      wordGuess = "";
       assignAnswer();
+      validKeys = new String[28];
       fillValidKeyCodeArray(validKeys);
    }
   
@@ -61,9 +69,15 @@ public class Gameboard extends JPanel
    public void assignAnswer()
    {
       int line = (int)(Math.random() * 2039 + 1);
-      Scanner temp = new Scanner("answers.txt");
+      try {
+         answerSelect = new Scanner(new File("answers.txt"));
+      }
+      catch(FileNotFoundException e) {
+         System.out.println("wrong file oopsies");
+         System.exit(0);
+      }
       for(int i = 0; i < line; i++)
-         answer = temp.next();
+         answer = answerSelect.next();
       System.out.println(answer);
    }
    
@@ -73,15 +87,21 @@ public class Gameboard extends JPanel
    */
    public boolean checkWordValid(String input)
    {
-      Scanner temp = new Scanner("guesses.txt");
-      Scanner temp2 = new Scanner("guesses.txt");
+      try {
+         lineCounter = new Scanner(new File("guesses.txt"));
+         wordFinder = new Scanner(new File("guesses.txt"));
+      }
+      catch(FileNotFoundException e) {
+         System.out.println("wrong file oopsies");
+         System.exit(0);
+      }
       int count = 0;
       
-      while(temp.hasNext())
+      while(lineCounter.hasNext())
          count++;
       String[] array = new String[count];
       for(int i = 0; i < count; i++)
-         array[i] = temp2.nextLine();
+         array[i] = wordFinder.nextLine();
          
       try {
          if(input.length() != 5)
@@ -104,13 +124,13 @@ public class Gameboard extends JPanel
       if(checkWordValid(input)) {
          row++;
          for(int i = 0; i < input.length(); i++) {
-            char temp = input.charAt(i);
+            char answerSelect = input.charAt(i);
             char ans = answer.charAt(i);
-            if(temp == ans)
+            if(answerSelect == ans)
                board[row][i].setBackground(Color.GREEN);
-            else if(answer.contains("" + temp) && temp != ans)
+            else if(answer.contains("" + answerSelect) && answerSelect != ans)
                board[row][i].setBackground(Color.YELLOW);
-            else if(temp != ans && !answer.contains("" + temp))
+            else if(answerSelect != ans && !answer.contains("" + answerSelect))
                board[row][i].setBackground(new Color(100, 100, 100));
          }
          space = 0;
@@ -169,7 +189,6 @@ public class Gameboard extends JPanel
    */
    public void fillValidKeyCodeArray(String[] arr)
    {
-      validKeys = new String[28];
       arr[0] = "Q";
       arr[1] = "W";
       arr[2] = "E";
