@@ -194,7 +194,8 @@ public class Gameboard extends JPanel
       for(int r = 0; r < 6; r++) {
          for(int c = 0; c < 5; c++) {
             board[r][c].setBackground(Color.WHITE);
-            board[r][c].setText(" ");
+            board[r][c].setForeground(Color.BLACK);
+            board[r][c].setText("     ");
          }
       }
    }
