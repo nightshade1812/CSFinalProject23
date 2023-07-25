@@ -53,8 +53,8 @@ public class WordlePanelStubs extends JPanel
    }
    /**
    *Resets the GameboardStubs and the KeyboardStubs by calling their reset methods
-   @see GameboardStubs#reset(void)
-   @see KeyboardStubs#reset(void)
+   @see GameboardStubs.reset()
+   @see KeyboardStubs.reset()
    */
    public void reset()
    {
@@ -62,12 +62,20 @@ public class WordlePanelStubs extends JPanel
       keyboard.reset();
       //all variables will be reset and the button will be disabled
    }
-   
+
+   /**
+   *Sets the amount of guesses per game to the input x
+   @param x    assigns x to guessLimit
+   */
    public void setGuessLimit(int x)
    {
       //this will set the number of guesses to x
    }
-   
+
+   /**
+   *Returns the total amount of guesses in the current game
+   @return     guessLimit
+   */
    public int getGuessLimit()
    {
       //this will return the current guess limit
