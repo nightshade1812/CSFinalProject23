@@ -8,7 +8,7 @@ public class WordleDriver
    public static void main(String[] args)
    {
       JFrame frame = new JFrame("Wordle - Final Project (Sarah and Satik)");
-      frame.setSize(400, 625);
+      frame.setSize(425, 625);
       frame.setLocation(200, 100);
       frame.addWindowListener(new SaveAndClose());
       frame.setContentPane(new WordlePanel());
