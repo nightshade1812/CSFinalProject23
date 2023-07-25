@@ -34,7 +34,7 @@ public class Scoreboard extends JPanel
    
    /**
    *A JLabel object that displays the total amount of games won.
-   @see Jlabel
+   @see JLabel
    */
    private JLabel winCountLabel;
    
