@@ -13,32 +13,32 @@ public class Gameboard extends JPanel
    /**
    *A JLabel matrix within a Gameboard instance, will display a word on each row
    */
-   private JLabel[][] board;
+   private static JLabel[][] board;
    
    /**
    *A string that stores the word to be guessed
    */
-   private String answer;
+   private static String answer;
    
    /**
    *A string that stores the current word being guessed
    */
-   private String wordGuess;
+   private static String wordGuess;
    
    /**
    *An int that stores the amount of guesses used
    */
-   private int guess;
+   private static int guess;
    
    /**
    *An int that stores the row the Wordle is typing in
    */
-   private int row;
+   private static int row;
    
    /**
    *An int that stores which space is the one to be typed in on the next key input
    */
-   private int space;
+   private static int space;
    
    /**
    *A string array that stores all valid key names
@@ -133,8 +133,6 @@ public class Gameboard extends JPanel
    */
    public void checkWord(String input, String answerin)
    {
-      Keyboard k = new Keyboard();
-      
       if(checkWordValid(input)) {
          answerin = answerin.toUpperCase();
          for(int i = 0; i < input.length(); i++) {
@@ -143,17 +141,17 @@ public class Gameboard extends JPanel
             if(answerSelect == ans) {
                board[row][i].setBackground(new Color(106, 170, 100));
                board[row][i].setForeground(Color.WHITE);
-               k.updateKeyboard("" + answerSelect, 2);
+               Keyboard.updateKeyboard("" + answerSelect, 2);
             }
-            else if(answer.contains("" + answerSelect) && answerSelect != ans) {
+            else if(answerin.contains("" + answerSelect) && answerSelect != ans) {
                board[row][i].setBackground(new Color(201, 180, 88));
                board[row][i].setForeground(Color.WHITE);
-               k.updateKeyboard("" + answerSelect, 1);
+               Keyboard.updateKeyboard("" + answerSelect, 1);
             }
             else if(answerSelect != ans && !answer.contains("" + answerSelect)) {
                board[row][i].setBackground(new Color(120, 124, 126));
                board[row][i].setForeground(Color.WHITE);
-               k.updateKeyboard("" + answerSelect, 0);
+               Keyboard.updateKeyboard("" + answerSelect, 0);
             }
          }
          space = 0;
@@ -203,7 +201,7 @@ public class Gameboard extends JPanel
       }
       else if(s.equalsIgnoreCase("lose")) {
          JOptionPane.showMessageDialog(null, "You lost! The word was " + answer + ".");
-         return true;
+         return false;
       }
       return false;
    }
@@ -241,6 +239,15 @@ public class Gameboard extends JPanel
       arr[25] = "M";
       arr[26] = "ENTER";
       arr[27] = "BACKSPACE";
+   }
+   
+   /**
+   *Returns the current board matrix
+   @return     JLabel[][]
+   */
+   public static JLabel[][] getBoard()
+   {
+      return board;
    }
    
    //the key listener that we will use to update the board as keys are typed
