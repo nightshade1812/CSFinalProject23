@@ -27,7 +27,7 @@ public class Keyboard extends JPanel
       
       assignKeys(keyboard);
       for(int k = 0; k < 26; k++)
-         keyboard[k].setFont(new Font("Serif", Font.BOLD, 35));
+         keyboard[k].setFont(new Font("Arial", Font.BOLD, 35));
       
       for(int k = 0; k < 10; k++)
          add(keyboard[k]);
@@ -51,44 +51,41 @@ public class Keyboard extends JPanel
 
    public static void assignKeys(JLabel[] arr)
    {
-      arr[0] = new JLabel("Q");
-      arr[1] = new JLabel("W");
-      arr[2] = new JLabel("E");
-      arr[3] = new JLabel("R");
-      arr[4] = new JLabel("T");
-      arr[5] = new JLabel("Y");
-      arr[6] = new JLabel("U");
-      arr[7] = new JLabel("I");
-      arr[8] = new JLabel("O");
-      arr[9] = new JLabel("P");
-      arr[10] = new JLabel("A");
-      arr[11] = new JLabel("S");
-      arr[12] = new JLabel("D");
-      arr[13] = new JLabel("F");
-      arr[14] = new JLabel("G");
-      arr[15] = new JLabel("H");
-      arr[16] = new JLabel("J");
-      arr[17] = new JLabel("K");
-      arr[18] = new JLabel("L");
-      arr[19] = new JLabel("Z");
-      arr[20] = new JLabel("X");
-      arr[21] = new JLabel("C");
-      arr[22] = new JLabel("V");
-      arr[23] = new JLabel("B");
-      arr[24] = new JLabel("N");
-      arr[25] = new JLabel("M");
+      arr[0] = new JLabel("Q", SwingConstants.CENTER);
+      arr[1] = new JLabel("W", SwingConstants.CENTER);
+      arr[2] = new JLabel("E", SwingConstants.CENTER);
+      arr[3] = new JLabel("R", SwingConstants.CENTER);
+      arr[4] = new JLabel("T", SwingConstants.CENTER);
+      arr[5] = new JLabel("Y", SwingConstants.CENTER);
+      arr[6] = new JLabel("U", SwingConstants.CENTER);
+      arr[7] = new JLabel("I", SwingConstants.CENTER);
+      arr[8] = new JLabel("O", SwingConstants.CENTER);
+      arr[9] = new JLabel("P", SwingConstants.CENTER);
+      arr[10] = new JLabel("A", SwingConstants.CENTER);
+      arr[11] = new JLabel("S", SwingConstants.CENTER);
+      arr[12] = new JLabel("D", SwingConstants.CENTER);
+      arr[13] = new JLabel("F", SwingConstants.CENTER);
+      arr[14] = new JLabel("G", SwingConstants.CENTER);
+      arr[15] = new JLabel("H", SwingConstants.CENTER);
+      arr[16] = new JLabel("J", SwingConstants.CENTER);
+      arr[17] = new JLabel("K", SwingConstants.CENTER);
+      arr[18] = new JLabel("L", SwingConstants.CENTER);
+      arr[19] = new JLabel("Z", SwingConstants.CENTER);
+      arr[20] = new JLabel("X", SwingConstants.CENTER);
+      arr[21] = new JLabel("C", SwingConstants.CENTER);
+      arr[22] = new JLabel("V", SwingConstants.CENTER);
+      arr[23] = new JLabel("B", SwingConstants.CENTER);
+      arr[24] = new JLabel("N", SwingConstants.CENTER);
+      arr[25] = new JLabel("M", SwingConstants.CENTER);
    }  
 
 /**
-*Resets the colors of a KeyboardStub object
+*Resets the colors of a Keyboard object
 */    
    public void reset()
    {
       for(int k = 0; k < 26; k++)
          keyboard[k].setBackground(Color.WHITE);
-         
-      //called in WordlePanel's reset
-      //sets all the keyboard labels' colors back to default
    }
  
 /**
