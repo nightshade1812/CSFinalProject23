@@ -1,6 +1,6 @@
 import javax.swing.*; //JPanel class
 
-public class WordleDriverStubs
+public class WordleDriver
 {
    public static void main(String[] args)
    {
