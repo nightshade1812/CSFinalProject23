@@ -115,7 +115,7 @@ public class Gameboard extends JPanel
    */
    public void inputKeyChar(char c)
    {
-      //will update the gameboard when a key is pressed
+      board[row][space].setText("" + c);
    }
    
    /**
@@ -123,8 +123,14 @@ public class Gameboard extends JPanel
    */
    public void reset()
    {
-      //called in WordlePanel's reset
-      //sets all the JLabels back to default and resets their colors
+      assignAnswer();
+      guess = row = space = 0;
+      for(int r = 0; r < 5; r++) {
+         for(int c = 0; c < 6; c++) {
+            board[r][c].setBackground(Color.WHITE);
+            board[r][c].setText(" ");
+         }
+      }
    }
    
    /**
