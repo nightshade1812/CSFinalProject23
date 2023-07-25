@@ -111,19 +111,6 @@ public class Scoreboard extends JPanel
       winPercentLabel.setText("Percent of Games Won: " + percent.format(100 * winPercentage));
    }
    
-   /**
-   *Finds the average amount of guesses it takes the player to find a word, returns it as a double
-   @return     avgGuesses
-   */
-   public double findAvgGuesses()
-   {
-      //this will find the average number of guesses needed to find a word
-      //it can be used for user statistics and will be displayed
-      
-      //a return statement is required so it will compile
-      return 0.0;
-   }
-   
    //modifier methods
    
    /**
