@@ -30,7 +30,7 @@ public class WordlePanel extends JPanel
    *A JButton that resets the WordlePanel and its subpanels
    @see JButton
    */
-   private JButton reset;
+   private static JButton reset;
    
    /**
    *An int that determines the amount of guesses in the game
@@ -82,6 +82,7 @@ public class WordlePanel extends JPanel
    {
       gameboard.reset();
       keyboard.reset();
+      scoreboard.update();
       //all variables will be reset and the button will be disabled
    }
    
@@ -101,6 +102,15 @@ public class WordlePanel extends JPanel
    public int getGuessLimit()
    {
       return guessLimit;
+   }
+   
+   /**
+   *Returns the reset JButton for use in other classes
+   @return     reset
+   */
+   public static JButton getResetButton()
+   {
+      return reset;
    }
    
    //listener for the reset button
