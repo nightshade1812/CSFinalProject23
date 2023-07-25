@@ -41,7 +41,11 @@ public class WordlePanel extends JPanel
    /****************************
    *Creates a WordlePanel instance containing a Gameboard object, a Scoreboard object, a KeyBoard object, and a JButton object
    */
-   
+   public void paintComponent(Graphics g)
+      {
+         g.setColor(Color.WHITE);
+         g.fillRect(0,0,400,625);
+      }
    public WordlePanel()
    {
       //initializing the objects we will need
