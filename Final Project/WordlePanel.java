@@ -43,8 +43,17 @@ public class WordlePanel extends JPanel
    */
    public void paintComponent(Graphics g)
       {
-         g.setColor(Color.WHITE);
-         g.fillRect(0,0,400,625);
+         Point point1 = new Point(0,0);
+         Point point2 = new Point(0,625);
+         GradientPaint wtb = new GradientPaint(point1, Color.cyan, point2, Color.blue);
+         Rectangle rect = new Rectangle(0,0,3840,2180);
+         
+         Graphics2D g2d = (Graphics2D)g;
+         
+         //g2d.clip(rect);
+         g2d.setPaint(wtb);
+         //g2d.setColor(Color.BLACK);
+         g2d.fill(rect);
       }
    public WordlePanel()
    {
