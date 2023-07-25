@@ -126,7 +126,7 @@ public class Gameboard extends JPanel
          return false;
       }
       
-      if(Searcher.binary(array, input, 0, count))
+      if(Searcher.linear(array, input))
          return true;
       return false;
    }
@@ -243,7 +243,7 @@ public class Gameboard extends JPanel
          String keyName = KeyEvent.getKeyText(keyCode);
          keyName = keyName.toUpperCase();
          
-         if((keyName != "ENTER" || keyName != "BACKSPACE") && Searcher.binary(validKeys, keyName, 0, 28)) {
+         if((keyName != "ENTER" && keyName != "BACKSPACE") && Searcher.linear(validKeys, keyName)) {
             board[row][space].setText(keyName);
             space++;
             wordGuess = wordGuess + keyName;
@@ -255,6 +255,8 @@ public class Gameboard extends JPanel
          }
          else if(keyName == "ENTER")
             checkWord(wordGuess, answer);
+         else
+            return;
       }
    }
 }
