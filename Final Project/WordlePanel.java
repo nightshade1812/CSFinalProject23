@@ -67,7 +67,7 @@ public class WordlePanel extends JPanel
    */
    public void setGuessLimit(int x)
    {
-      //this will set the number of guesses to x
+      guessLimit = x;
    }
    
    /**
@@ -76,10 +76,7 @@ public class WordlePanel extends JPanel
    */
    public int getGuessLimit()
    {
-      //this will return the current guess limit
-      
-      //a return statement is required so it will compile
-      return 0;
+      return guessLimit;
    }
    
    //listener for the reset button
