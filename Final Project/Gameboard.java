@@ -86,15 +86,28 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Checks if the word that the user inputs is equal to answer, will change the colors of Gameboard stubs or display a winner message accordingly
+   *Checks if the word that the user inputs is equal to answer and will change the colors of Gameboard squares or display a winner message accordingly
    */
    public void checkWord(String input, String answer)
    {
-      checkWordValid(input);
-      
-      //when called, the input string will be checked against the answer
-      //this method will change the colors of the JLabels to signify the letter's status
-      //it will also account for when the game has ended, either by guesses being 6 or a win
+      if(checkWordValid(input)) {
+         row++;
+         for(int i = 0; i < input.length(); i++) {
+            char temp = input.charAt(i);
+            char ans = answer.charAt(i);
+            if(temp == ans)
+               board[row][i].setBackground(Color.GREEN);
+            else if(answer.contains("" + temp) && temp != ans)
+               board[row][i].setBackground(Color.YELLOW);
+            else if(temp != ans && !answer.contains("" + temp))
+               board[row][i].setBackground(new Color(100, 100, 100));
+         }
+         guess++;
+         if(input.equalsIgnoreCase(answer))
+            winner();
+         if(guess == 6)
+            loser();
+      }
    }
    
    /**
@@ -112,6 +125,22 @@ public class Gameboard extends JPanel
    {
       //called in WordlePanel's reset
       //sets all the JLabels back to default and resets their colors
+   }
+   
+   /**
+   *Displays a win message and ends the game
+   */
+   public void winner()
+   {
+   
+   }
+   
+   /**
+   *Displays a game over message and ends the game
+   */
+   public void loser()
+   {
+   
    }
    
    //the key listener that we will use to update the board as keys are typed
