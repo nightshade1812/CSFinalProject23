@@ -14,21 +14,29 @@ public class Keyboard extends JPanel
 */
    private static JLabel[] keyboard;
   
+  /****************************
+   *Fills the panel with white
+   */
+   public void paintComponent(Graphics g)
+   {
+      g.setColor(Color.WHITE);
+      g.fillRect(0, 0, 600, 600);
+   }
+   
 /**
 *Creates a Keyboard instance with a JLabel array
 */
    public Keyboard()
    {
-      //layout to be added here
       setLayout(new GridLayout(3, 10, 1, 1));
-      
-      //initializing the objects we will need
+   
       keyboard = new JLabel[26];
       
       assignKeys(keyboard);
       for(int k = 0; k < 26; k++) {
          keyboard[k].setFont(new Font("Arial", Font.BOLD, 35));
          keyboard[k].setOpaque(true);
+         keyboard[k].setBackground(Color.WHITE);
       }
       
       for(int k = 0; k < 10; k++)
@@ -86,8 +94,10 @@ public class Keyboard extends JPanel
 */    
    public void reset()
    {
-      for(int k = 0; k < 26; k++)
+      for(int k = 0; k < 26; k++) {
          keyboard[k].setBackground(Color.WHITE);
+         keyboard[k].setForeground(Color.BLACK);
+      }
    }
  
 /**
