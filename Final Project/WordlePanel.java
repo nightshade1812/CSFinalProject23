@@ -55,8 +55,8 @@ public class WordlePanel extends JPanel
       //adding an action listener for the reset button
       reset.addActionListener(new ResetListener());
       
-      add(gameboard);
       add(scoreboard);
+      add(gameboard);
       add(keyboard);
       add(reset);
    }
