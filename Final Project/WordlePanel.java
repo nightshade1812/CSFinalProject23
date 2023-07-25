@@ -39,22 +39,17 @@ public class WordlePanel extends JPanel
    private int guessLimit = 6;
    
    /****************************
-   *Creates a WordlePanel instance containing a Gameboard object, a Scoreboard object, a KeyBoard object, and a JButton object
+   *Fills the panel with white
    */
    public void paintComponent(Graphics g)
-      {
-         Point point1 = new Point(0,0);
-         Point point2 = new Point(0,625);
-         GradientPaint wtb = new GradientPaint(point1, Color.cyan, point2, Color.blue);
-         Rectangle rect = new Rectangle(0,0,3840,2180);
-         
-         Graphics2D g2d = (Graphics2D)g;
-         
-         //g2d.clip(rect);
-         g2d.setPaint(wtb);
-         //g2d.setColor(Color.BLACK);
-         g2d.fill(rect);
-      }
+   {
+      g.setColor(Color.WHITE);
+      g.fillRect(0, 0, 600, 600);
+   }
+   
+   /****************************
+   *Creates a WordlePanel instance containing a Gameboard object, a Scoreboard object, a KeyBoard object, and a JButton object
+   */
    public WordlePanel()
    {
       //initializing the objects we will need
@@ -80,10 +75,10 @@ public class WordlePanel extends JPanel
    */
    public void reset()
    {
+      scoreboard.update();
       gameboard.reset();
       keyboard.reset();
-      scoreboard.update();
-      //all variables will be reset and the button will be disabled
+      reset.setEnabled(false);
    }
    
    /**
