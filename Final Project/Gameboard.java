@@ -55,12 +55,27 @@ public class Gameboard extends JPanel
    */
    public Gameboard()
    {
+      setLayout(new GridLayout(6, 5, 2, 2));
+      
       board = new JLabel[6][5];
+      
+      for(int r = 0; r < board.length; r++)
+         for(int c = 0; c < board[0].length; c++)
+         {
+            board[r][c] = new JLabel("B");
+            board[r][c].setFont(new Font("Arial", Font.BOLD, 50));
+            board[r][c].setBackground(Color.WHITE);
+            add(board[r][c]);
+         }
+      
       answer = "";
       wordGuess = "";
       assignAnswer();
       validKeys = new String[28];
       fillValidKeyCodeArray(validKeys);
+      addKeyListener(new KeyDetector());
+      setFocusable(true);
+      
    }
   
    /**
@@ -160,8 +175,8 @@ public class Gameboard extends JPanel
    {
       assignAnswer();
       guess = row = space = 0;
-      for(int r = 0; r < 5; r++) {
-         for(int c = 0; c < 6; c++) {
+      for(int r = 0; r < 6; r++) {
+         for(int c = 0; c < 5; c++) {
             board[r][c].setBackground(Color.WHITE);
             board[r][c].setText(" ");
          }
