@@ -45,8 +45,8 @@ public class Keyboard extends JPanel
       JPanel sub1 = new JPanel();
       sub1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
          
-         for(int k = 0; k < 10; k++)
-            sub1.add(keyboard[k]);
+      for(int k = 0; k < 10; k++)
+         sub1.add(keyboard[k]);
        
       add(sub1, BorderLayout.NORTH);   
       
@@ -54,25 +54,25 @@ public class Keyboard extends JPanel
       sub2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 4));
      
       
-      JLabel shortBlank = new JLabel("   ");
+      JLabel shortBlank = new JLabel("     ");
       shortBlank.setFont(new Font("Arial", Font.PLAIN, 15));
       sub2.add(shortBlank);
       
       for(int k = 10; k < 19; k++)
-          sub2.add(keyboard[k]);
+         sub2.add(keyboard[k]);
       
       add(sub2, BorderLayout.CENTER);
          
       JPanel sub3 = new JPanel();
-         sub3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
-         JLabel longBlank = new JLabel("           ");
-         sub3.add(longBlank);
+      sub3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
+      JLabel longBlank = new JLabel("                   ");
+      sub3.add(longBlank);
          
-         for(int k = 19; k < 26; k++)
-            sub3.add(keyboard[k]);
+      for(int k = 19; k < 26; k++)
+         sub3.add(keyboard[k]);
       
       add(sub3, BorderLayout.SOUTH);
-  
+   
    }
 
 /**
