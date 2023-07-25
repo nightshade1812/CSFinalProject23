@@ -14,7 +14,7 @@ public class Gameboard extends JPanel
    *A JLabel matrix within a Gameboard instance, will display a word on each row
    */
    private JLabel[][] board;
-   assignAnswer();
+   
    /**
    *A string that stores the word to be guessed
    */
@@ -26,12 +26,22 @@ public class Gameboard extends JPanel
    private int guess;
    
    /**
+   *An int that stores the row the Wordle is typing in
+   */
+   private int row;
+   
+   /**
+   *An int that stores which space is the one to be typed in on the next key input
+   */
+   private int space;
+   
+   /**
    *Creates a new Gameboard object with a JLabel matrix
    */
    public Gameboard()
    {
-      //initializing the objects we will need
       board = new JLabel[6][5];
+      assignAnswer();
    }
   
    /**
@@ -44,7 +54,6 @@ public class Gameboard extends JPanel
       for(int i = 0; i < line; i++)
          answer = temp.next();
       System.out.println(answer);
-      //will randomly select a line in answers.txt and assign it to answer
    }
    
    /**
@@ -53,6 +62,16 @@ public class Gameboard extends JPanel
    */
    public boolean checkWordValid(String input)
    {
+      Scanner temp = new Scanner("guesses.txt");
+      Scanner temp2 = new Scanner("guesses.txt");
+      int count = 0;
+      
+      while(temp.hasNext())
+         count++;
+      String[] array = new String[count];
+      for(int i = 0; i < count; i++)
+         array[i] = temp2.nextLine();
+         
       try {
          if(input.length() != 5)
             throw new StringBadLengthException("String is not five characters - try again");
@@ -61,12 +80,9 @@ public class Gameboard extends JPanel
          return false;
       }
       
-      
-      //will check the input word against guesses.txt and determine if it is a word or not
-      //also accounts for words of incorrect length
-      
-      //a return is required or it will not compile
-      return true;
+      if(Searcher.binary(array, input, 0, count))
+         return true;
+      return false;
    }
    
    /**
