@@ -41,6 +41,11 @@ public class Gameboard extends JPanel
    private static int space;
    
    /**
+   *A boolean that stores whether or not the game has ended in a win
+   */
+   private static boolean win;
+   
+   /**
    *A string array that stores all valid key names
    */
    private String[] validKeys;
@@ -157,10 +162,14 @@ public class Gameboard extends JPanel
          space = 0;
          row++;
          guess++;
-         if(input.equalsIgnoreCase(answerin))
-            winner("win");
-         else if(guess == 6)
-            winner("lose");
+         if(input.equalsIgnoreCase(answerin)) {
+            win = true;
+            winner();
+         }
+         else if(guess == 6) {
+            win = false;
+            winner();
+         }
          wordGuess = "";
       }
       else
@@ -193,16 +202,10 @@ public class Gameboard extends JPanel
    /**
    *Displays a message depending on whether the player has won or lost
    */
-   public boolean winner(String s)
+   public static boolean winner()
    {
-      if(s.equalsIgnoreCase("win")) {
-         JOptionPane.showMessageDialog(null, "Winner!");
+      if(win)
          return true;
-      }
-      else if(s.equalsIgnoreCase("lose")) {
-         JOptionPane.showMessageDialog(null, "You lost! The word was " + answer + ".");
-         return false;
-      }
       return false;
    }
    
