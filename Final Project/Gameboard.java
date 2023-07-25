@@ -204,6 +204,7 @@ public class Gameboard extends JPanel
    */
    public static boolean winner()
    {
+      WordlePanel.getResetButton().setEnabled(true);
       if(win)
          return true;
       return false;
