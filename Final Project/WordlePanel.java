@@ -51,8 +51,7 @@ public class WordlePanel extends JPanel
       scoreboard = new Scoreboard();
       keyboard = new Keyboard();
       reset = new JButton("Reset");
-      
-      //adding an action listener for the reset button
+      reset.setEnabled(false);
       reset.addActionListener(new ResetListener());
       
       add(scoreboard);
