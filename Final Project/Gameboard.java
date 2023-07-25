@@ -116,9 +116,9 @@ public class Gameboard extends JPanel
          space = 0;
          guess++;
          if(input.equalsIgnoreCase(answer))
-            winner();
-         if(guess == 6)
-            loser();
+            winner("win");
+         else if(guess == 6)
+            winner("lose");
          wordGuess = "";
       }
       else
@@ -149,19 +149,19 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Displays a win message and ends the game
+   *Displays a message depending on whether the player has won or lost
    */
-   public void winner()
+   public boolean winner(String s)
    {
-   
-   }
-   
-   /**
-   *Displays a game over message and ends the game
-   */
-   public void loser()
-   {
-   
+      if(s.equalsIgnoreCase("win")) {
+         JOptionPane.showMessageDialog(null, "Winner!");
+         return true;
+      }
+      else if(s.equalsIgnoreCase("lose")) {
+         JOptionPane.showMessageDialog(null, "You lost! The word was " + answer + ".");
+         return true;
+      }
+      return false;
    }
    
    /**
