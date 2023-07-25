@@ -26,6 +26,8 @@ public class Keyboard extends JPanel
       keyboard = new JLabel[26];
       
       assignKeys(keyboard);
+      for(int k = 0; k < 26; k++)
+         keyboard[k].setFont(new Font("Serif", Font.BOLD, 35));
       
       for(int k = 0; k < 10; k++)
          add(keyboard[k]);
