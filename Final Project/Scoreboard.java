@@ -43,8 +43,6 @@ public class Scoreboard extends JPanel
    */
    public Scoreboard()
    {
-      //initializing the objects we will need
-      
       setLayout(new FlowLayout()); //might change to another layout later on
       
       winPercentage = 0.0;
@@ -58,7 +56,6 @@ public class Scoreboard extends JPanel
       
       add(winCountLabel);
       add(winPercentLabel);
-      //these JLabels will show winPercentage and winCount for the user
    }
    
    /**
@@ -69,19 +66,30 @@ public class Scoreboard extends JPanel
    {
       PrintWriter dataFile = null;
       try{
-      dataFile = new PrintWriter(new FileWriter("stats.txt"));
+         dataFile = new PrintWriter(new FileWriter("stats.txt"));
       }
       catch(Exception e)
       {
-      JOptionPane.showMessageDialog(null, "The game could not be saved.");
+         JOptionPane.showMessageDialog(null, "The game could not be saved.");
       }
+      
+      JLabel[][] board = Gameboard.getBoard();
       
       dataFile.println(winCount);
       dataFile.println(gameCount);
       dataFile.println(winPercentage);
-      
+      for(int r = 0; r < board.length; r++) {
+         for(int c = 0; c < board[0].length; c++) {
+            if(board[r][c].getText().contains(" ")) {
+               dataFile.println("null");
+               break;
+            }
+            else
+               dataFile.print(board[r][c].getText());
+         }
+         dataFile.print("\n");
+      }
       dataFile.close();
-      //this will save all score data and current gameboard state to a .txt file
    }
    
    /**
