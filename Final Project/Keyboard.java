@@ -26,8 +26,10 @@ public class Keyboard extends JPanel
       keyboard = new JLabel[26];
       
       assignKeys(keyboard);
-      for(int k = 0; k < 26; k++)
+      for(int k = 0; k < 26; k++) {
          keyboard[k].setFont(new Font("Arial", Font.BOLD, 35));
+         keyboard[k].setOpaque(true);
+      }
       
       for(int k = 0; k < 10; k++)
          add(keyboard[k]);
@@ -91,9 +93,21 @@ public class Keyboard extends JPanel
 /**
 *Updates the colors of individual letters on the QWERTY keyboard display depending on the player's guesses. 
 */  
-   public void updateKeyboard()
+   public void updateKeyboard(String letter, int matchLevel)
    {
-      //will change the colors of the keys depending on if they are in the word or not
-      //this makes the user's interactions simpler, because they can have an easy reference
+      String alphabet = "QWERTYUIOPASDFGHJKLZXCVBNM";
+      int i = alphabet.indexOf(letter);
+      if(matchLevel == 0) {
+         keyboard[i].setBackground(new Color(120, 124, 126));
+         keyboard[i].setForeground(Color.WHITE);
+      }
+      else if(matchLevel == 1) {
+         keyboard[i].setBackground(new Color(201, 180, 88));
+         keyboard[i].setForeground(Color.WHITE);
+      }
+      else {
+         keyboard[i].setBackground(new Color(106, 170, 100));
+         keyboard[i].setForeground(Color.WHITE);
+      }
    }
 }
