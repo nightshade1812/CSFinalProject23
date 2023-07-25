@@ -12,7 +12,7 @@ public class Keyboard extends JPanel
 @see JLabel
 @see java.util.Arrays
 */
-   private JLabel[] keyboard;
+   private static JLabel[] keyboard;
   
 /**
 *Creates a Keyboard instance with a JLabel array
@@ -93,7 +93,7 @@ public class Keyboard extends JPanel
 /**
 *Updates the colors of individual letters on the QWERTY keyboard display depending on the player's guesses. 
 */  
-   public void updateKeyboard(String letter, int matchLevel)
+   public static void updateKeyboard(String letter, int matchLevel)
    {
       String alphabet = "QWERTYUIOPASDFGHJKLZXCVBNM";
       int i = alphabet.indexOf(letter);
