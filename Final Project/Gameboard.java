@@ -268,7 +268,7 @@ public class Gameboard extends JPanel
          if((!keyName.equals("BACKSPACE") && !keyName.equals("ENTER")) && Searcher.linear(validKeys, keyName)) {
             if(space == 5)
                return;
-            board[row][space].setText(keyName);
+            board[row][space].setText(" " + keyName + " ");
             space++;
             wordGuess = wordGuess + keyName;
          }
