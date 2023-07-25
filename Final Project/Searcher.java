@@ -1,6 +1,3 @@
-import java.io.*;
-import java.util.*;
-
 public class Searcher
 {
    public static boolean linear(String[] array, String target)
