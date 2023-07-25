@@ -23,4 +23,4 @@ public class WordleDriver
          System.exit(0);
       }
    }
-}
+} 
