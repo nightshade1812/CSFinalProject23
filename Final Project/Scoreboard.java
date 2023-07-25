@@ -39,6 +39,12 @@ public class Scoreboard extends JPanel
    private JLabel winCountLabel;
    
    /**
+   *A DecimalFormat object that formats the win percentage.
+   @see DecimalFormat
+   */
+   private DecimalFormat percent;
+   
+   /**
    *Creates a Scoreboard instance containing 2 JLabel objects
    */
    public Scoreboard()
@@ -48,7 +54,7 @@ public class Scoreboard extends JPanel
       winPercentage = 0.0;
       winCount = gameCount = 0;
       
-      DecimalFormat percent = new DecimalFormat("0.0%");
+      percent = new DecimalFormat("0.0%");
       
       
       winCountLabel = new JLabel("Total Wins: " + winCount);
@@ -97,7 +103,12 @@ public class Scoreboard extends JPanel
    */
    public void update()
    {
-      //this will update the scoreboard when a game is completed
+      gameCount++;
+      if(Gameboard.winner())
+         winCount++;
+      winPercentage = (double)(winCount)/(double)(gameCount);
+      winCountLabel.setText("Total Wins: " + winCount);
+      winPercentLabel.setText("Percent of Games Won: " + percent.format(100 * winPercentage));
    }
    
    /**
