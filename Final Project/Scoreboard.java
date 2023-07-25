@@ -2,6 +2,7 @@ import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.util.*; //PrintWriter class
 import java.io.*; //File class
+import java.text.DecimalFormat; //DecimalFormat class
 
 /**
 *The Scoreboard class keeps track of the total wins and the win percentage of the overall game. This data can be saved in an external
@@ -43,11 +44,20 @@ public class Scoreboard extends JPanel
    public Scoreboard()
    {
       //initializing the objects we will need
+      
+      setLayout(new FlowLayout()); //might change to another layout later on
+      
       winPercentage = 0.0;
       winCount = gameCount = 0;
       
-      winPercentLabel = new JLabel("---");
-      winCountLabel = new JLabel("---");
+      DecimalFormat percent = new DecimalFormat("0.0%");
+      
+      
+      winCountLabel = new JLabel("Total Wins: " + winCount);
+      winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(100 * winPercentage));
+      
+      add(winCountLabel);
+      add(winPercentLabel);
       //these JLabels will show winPercentage and winCount for the user
    }
    
@@ -57,6 +67,20 @@ public class Scoreboard extends JPanel
    */
    public void saveData()
    {
+      PrintWriter dataFile = null;
+      try{
+      dataFile = new PrintWriter(new FileWriter("stats.txt"));
+      }
+      catch(Exception e)
+      {
+      JOptionPane.showMessageDialog(null, "The game could not be saved.");
+      }
+      
+      dataFile.println(winCount);
+      dataFile.println(gameCount);
+      dataFile.println(winPercentage);
+      
+      dataFile.close();
       //this will save all score data and current gameboard state to a .txt file
    }
    
@@ -89,7 +113,7 @@ public class Scoreboard extends JPanel
    */
    public void setWinPercent(double x)
    {
-      //sets winPercent to x
+      winPercentage = x;
    }
    
    /**
@@ -98,7 +122,7 @@ public class Scoreboard extends JPanel
    */
    public void setWinCount(int x)
    {
-      //sets winCount to x
+      winCount = x;
    }
    
    /**
@@ -107,7 +131,7 @@ public class Scoreboard extends JPanel
    */
    public void setGameCount(int x)
    {
-      //sets gameCount to x
+      gameCount = x;
    }
    
    //accessor methods
@@ -118,8 +142,7 @@ public class Scoreboard extends JPanel
    */
    public double getWinPercent()
    {
-      //returns winPercentage
-      return 0.0;
+      return winPercentage;
    }
    
    /**
@@ -128,8 +151,7 @@ public class Scoreboard extends JPanel
    */
    public int getWinCount()
    {
-      //returns winCount
-      return 0;
+      return winCount;
    }
    
    /**
@@ -138,7 +160,6 @@ public class Scoreboard extends JPanel
    */
    public int getGameCount()
    {
-      //returns gameCount
-      return 0;
+      return gameCount;
    }
 }
