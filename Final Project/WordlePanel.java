@@ -1,3 +1,4 @@
+
 import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.awt.event.*; //Listener class
@@ -12,19 +13,19 @@ public class WordlePanel extends JPanel
    *The WordlePanel' Gameboard
    @see Gameboard
    */
-   private Gameboard gameboard;
+   private static Gameboard gameboard;
    
    /**
    *The WordlePanel' Scoreboard
    @see Scoreboard
    */
-   private Scoreboard scoreboard;
+   private static Scoreboard scoreboard;
    
    /**
    *The WordlePanel' Keyboard
    @see Keyboard
    */
-   private Keyboard keyboard;
+   private static Keyboard keyboard;
    
    /**
    *A JButton that resets the WordlePanel and its subpanels
@@ -38,13 +39,22 @@ public class WordlePanel extends JPanel
    //guessLimit starts at 6, as is traditional for Wordle
    private int guessLimit = 6;
    
+   /**
+   * ///////////////////INSERT COMMENT HERE /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   */
+   private static JComboBox style;
+   
+   /**
+   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   */
+   private static JLabel title;
    /****************************
    *Fills the panel with white
    */
    public void paintComponent(Graphics g)
    {
-      g.setColor(Color.WHITE);
-      g.fillRect(0, 0, 600, 600);
+      g.setColor(Color.white);
+      g.fillRect(0, 0, 2000, 1800);
    }
    
    /****************************
@@ -52,11 +62,19 @@ public class WordlePanel extends JPanel
    */
    public WordlePanel()
    {
-      setLayout(new FlowLayout());
+      GridBagLayout gridbag = new GridBagLayout();
+      GridBagConstraints c = new GridBagConstraints();
       
-      JLabel title = new JLabel("Wordle");
+      setLayout(gridbag);
+      
+      JPanel gameContainer = new JPanel();
+      gameContainer.setLayout(new FlowLayout());
+      gameContainer.setOpaque(true);
+      gameContainer.setBackground(Color.white);
+      
+      title = new JLabel("     Wordle     ");
       title.setFont(new Font("Serif", Font.BOLD, 40));
-      add(title);
+      gameContainer.add(title);
 
          JPanel game = new JPanel();
          game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
@@ -64,19 +82,55 @@ public class WordlePanel extends JPanel
          gameboard = new Gameboard();
          scoreboard = new Scoreboard();      
          keyboard = new Keyboard();
-         keyboard.setPreferredSize(new Dimension(500,180));         
-         
+         keyboard.setPreferredSize(new Dimension(500,180));
+         keyboard.setOpaque(true);
+         keyboard.setBackground(Color.BLACK);
+          
          game.add(gameboard);
          game.add(keyboard);
-         game.add(scoreboard);         
-         
-      add(game);
+                 
+      gameContainer.add(game);
+      
+      c.fill = GridBagConstraints.VERTICAL;
+      c.weightx = 1.0;
+      c.weighty = 1.0;
+      c.gridx = 0;
+      c.gridy = 0;
+      c.gridheight = 3;
+      add(gameContainer, c);
       
       reset = new JButton("Reset");
       reset.setEnabled(false);
       reset.addActionListener(new ResetListener());
-      add(reset);
-   }
+      reset.setPreferredSize(new Dimension(100,100));
+      
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.weightx = 0.5;
+      c.weighty = 0.0;
+      c.gridx = 1;
+      c.gridy = 2;
+      c.gridheight = 1;
+      add(reset, c);
+      
+      String[] list = {"Classic Light", "Classic Dark", "Neon", "Rainbow"};
+      style = new JComboBox(list);       // for some reason this line gives the "unckecked or unsafe operations" message
+      style.setFocusable(false);
+      style.addActionListener(new StyleListener());
+      
+      c.fill = GridBagConstraints.HORIZONTAL;
+      c.weightx = 0.5;
+      c.weighty = 0.7;
+      c.gridx = 1;
+      c.gridy = 1; 
+      add(style,c);
+      
+      
+      c.fill = GridBagConstraints.BOTH;
+      c.gridx = 1;
+      c.gridy = 0;
+      add(scoreboard, c);
+      
+   } 
    
    /**
    *Resets the Gameboard and the Keyboard by calling their reset methods
@@ -124,7 +178,27 @@ public class WordlePanel extends JPanel
       public void actionPerformed(ActionEvent e)
       {
          //calls the WordlePanel's reset method
+         
+         SoundEffect reset = new SoundEffect("buttonclick.wav");
+         reset.play();
          reset();
+      }
+   }
+   
+   public static void changeStyle(String styleName)
+   {
+      //gameboard.changeStyle(styleName);
+      //keyboard.changeStyle(styleName);
+      //scoreboard.changeStyle(styleName); 
+   }
+   //listener for the dropdown menu
+   private class StyleListener implements ActionListener
+   {
+      public void actionPerformed(ActionEvent e)
+      {
+         JComboBox source = (JComboBox)e.getSource();
+         String style = source.getSelectedItem().toString();
+         changeStyle(style);
       }
    }
 }
