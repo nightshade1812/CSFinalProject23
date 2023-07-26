@@ -183,6 +183,8 @@ public class Gameboard extends JPanel
             answerChars[i] = answerin.charAt(i);
          }
          
+         boolean boolTest = false;
+         
          for(int i = 0; i < input.length(); i++) {
             if(inputChars[i] == answerChars[i]) {
                if(style.equals("Classic"))
@@ -212,6 +214,7 @@ public class Gameboard extends JPanel
                Keyboard.updateKeyboard("" + inputChars[i], 0, WordlePanel.getStyleName());
             }
          }
+         ////////////////////////////add other for loop handling the double letters here/////////////////////////////////
          space = 0;
          row++;
          guess++;
