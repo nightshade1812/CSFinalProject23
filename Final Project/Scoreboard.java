@@ -81,7 +81,7 @@ public class Scoreboard extends JPanel
       
       winCountLabel = new JLabel("Total Wins: " + winCount, SwingConstants.CENTER);
       winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage), SwingConstants.CENTER);
-      gameStatusLabel = new JLabel("    ");
+      gameStatusLabel = new JLabel("    ", SwingConstants.CENTER);
       winCountLabel.setFont(new Font("Arial", Font.BOLD, 14));
       winPercentLabel.setFont(new Font("Arial", Font.BOLD, 14));
       gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 14));
