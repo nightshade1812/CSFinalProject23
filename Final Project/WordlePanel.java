@@ -55,16 +55,38 @@ public class WordlePanel extends JPanel
    private static JLabel title;
    
    /**
+   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   */
+   private static JLabel styleTitle;
+   
+   /**
    * /////////////////INSERT COMMENT HERE//////////////////////////////////////////////////////////////////////////////////////////////////////
    */
    private static String styleName;
+   
+   /**
+   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   */
+   private static JPanel game, gameContainer;
+   
    /****************************
-   *Fills the panel with white
+   *Fills the panel with a color depending on the theme
    */
    public void paintComponent(Graphics g)
    {
-      g.setColor(Color.white);
-      g.fillRect(0, 0, 2000, 1800);
+      if(styleName.equals("Classic")) {
+         g.setColor(Color.white);
+         g.fillRect(0, 0, 2000, 1800);
+      }
+      else if(styleName.equals("Neon")) {
+         g.setColor(Color.BLACK);
+         g.fillRect(0, 0, 2000, 1800);
+      }
+   }
+   
+   public static String getStyle()
+   {
+      return styleName;
    }
    
    /****************************
@@ -81,7 +103,7 @@ public class WordlePanel extends JPanel
       setOpaque(true);
       setBackground(Color.green);
       
-      JPanel gameContainer = new JPanel();
+      gameContainer = new JPanel();
       gameContainer.setLayout(new FlowLayout());
       gameContainer.setOpaque(true);
       gameContainer.setBackground(Color.white);
@@ -90,14 +112,16 @@ public class WordlePanel extends JPanel
       title.setFont(new Font("Arial", Font.BOLD, 40));
       gameContainer.add(title);
    
-      JPanel game = new JPanel();
+      game = new JPanel();
       game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
+      game.setOpaque(true);
+      game.setBackground(new Color(238, 238, 238));
          
       keyboard = new Keyboard();
       keyboard.setPreferredSize(new Dimension(500,180));
       keyboard.setOpaque(true);
-      keyboard.setBackground(Color.BLACK);
-      reset = new JButton("Reset");
+      keyboard.setBackground(Color.black);
+      reset = new JButton("New Game");
       reset.setEnabled(false);
       reset.setFocusable(false);
       reset.addActionListener(new ResetListener());
@@ -130,7 +154,7 @@ public class WordlePanel extends JPanel
       c.anchor = GridBagConstraints.PAGE_START;
       add(reset, c);
       
-      JLabel styleTitle = new JLabel("Choose a Style:");
+      styleTitle = new JLabel("Choose a Style:");
       styleTitle.setFont(new Font("Arial", Font.BOLD, 20));
       
       c.weightx = 1.0;
@@ -140,7 +164,7 @@ public class WordlePanel extends JPanel
       add(styleTitle, c);
       
       String[] list = {"Classic", "Neon"};
-      style = new JComboBox(list);       // for some reason this line gives the "unckecked or unsafe operations" message
+      style = new JComboBox(list);       // for some reason this line gives the "unchecked or unsafe operations" message
       style.setFocusable(false);
       style.addActionListener(new StyleListener());
       
@@ -243,13 +267,27 @@ public class WordlePanel extends JPanel
       }
    }
    
-   public static void changeStyle(String s)
+   public void changeStyle(String s)
    {
       styleName = s;
+      repaint();
+      if(styleName.equals("Classic")) {
+         gameContainer.setBackground(Color.white);
+         game.setBackground(new Color(238, 238, 238));
+         title.setForeground(Color.black);
+         styleTitle.setForeground(Color.black);
+      }
+      else if(styleName.equals("Neon")) {
+         game.setBackground(Color.black);
+         gameContainer.setBackground(Color.black);
+         title.setForeground(Color.white);
+         styleTitle.setForeground(Color.white);
+      }
       gameboard.changeStyle(s);
       keyboard.changeStyle(s);
       scoreboard.changeStyle(s);    
    }
+   
    //listener for the dropdown menu
    private class StyleListener implements ActionListener
    {
