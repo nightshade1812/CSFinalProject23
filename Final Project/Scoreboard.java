@@ -1,335 +1,187 @@
-\import javax.swing.*; //JPanel class and other graphics objects
+import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
-import java.awt.event.*; //Listener class
-import java.util.*; //Scanner class
+import java.util.*; //PrintWriter class
 import java.io.*; //File class
+import java.text.DecimalFormat; //DecimalFormat class
 
 /**
-*The Gameboard class is the main game container. The main player input happens here via the keyboard. The word is chosen and checked 
-* against the player's input via several methods. 
+*The Scoreboard class keeps track of the total wins and the win percentage of the overall game. This data can be saved in an external
+* text file along with the current game state, which can be later retrieved by the player. 
 */
-public class Gameboard extends JPanel
+
+public class Scoreboard extends JPanel
 {
    /**
-   *A JLabel matrix within a Gameboard instance, will display a word on each row
+   *A double that stores the ratio of wins to total games played.
    */
-   private static JLabel[][] board;
+   private double winPercentage;
    
    /**
-   *A string that stores the word to be guessed
+   *An int that stores the amount of games won.
    */
-   private static String answer;
+   private int winCount;
    
    /**
-   *A string that stores the current word being guessed
+   *An int that stores the total amount of games that have been played. 
    */
-   private static String wordGuess;
+   private int gameCount;
    
    /**
-   *An int that stores the amount of guesses used
+   *A JLabel object that displays the percentage of games won.
+   @see JLabel
    */
-   private static int guess;
+   private JLabel winPercentLabel;
    
    /**
-   *An int that stores the row the Wordle is typing in
+   *A JLabel object that displays the total amount of games won.
+   @see JLabel
    */
-   private static int row;
+   private JLabel winCountLabel;
    
    /**
-   *An int that stores which space is the one to be typed in on the next key input
+   *A DecimalFormat object that formats the win percentage.
+   @see DecimalFormat
    */
-   private static int space;
+   private DecimalFormat percent;
    
    /**
-   *A boolean that stores whether or not the game has ended in a win
+   *A Scanner that reads a data file to put the game back at its last known state.
+   @see Scanner
    */
-   private static boolean win;
+   private Scanner dataReader;
    
    /**
-   *A string array that stores all valid key names
+   *Creates a Scoreboard instance containing 2 JLabel objects
    */
-   private String[] validKeys;
-   
-   /**
-   *A scanner that will be used to search a file and find a random word to be the answer.
-   */
-   private Scanner answerSelect;
-   
-   /**
-   *A scanner that will be used to search a file and find whether or not a word is a valid guess.
-   */
-   private Scanner wordFinder;
-
-   /**
-   *Creates a new Gameboard object with a JLabel matrix
-   */
-   public Gameboard()
+   public Scoreboard()
    {
-      Scanner dataReader = null;
-      
-      setLayout(new GridLayout(6, 5, 2, 2));
-      
-      board = new JLabel[6][5];
-      
-      for(int r = 0; r < board.length; r++)
-         for(int c = 0; c < board[0].length; c++)
-         {
-            board[r][c] = new JLabel("     ", SwingConstants.CENTER);
-            board[r][c].setFont(new Font("Arial", Font.BOLD, 50));
-            board[r][c].setOpaque(true);
-            board[r][c].setBackground(Color.WHITE);
-            add(board[r][c]);
-         }
+      setLayout(new FlowLayout()); //might change to another layout later on
       
       try {
          dataReader = new Scanner(new File("stats.txt"));
       }
       catch(FileNotFoundException e) {
-         
+         winCount = gameCount = 0;
       }
       
-      for(int i = 0; i < 3; i++)
-         dataReader.nextLine();
+      winCount = dataReader.nextInt();
+      gameCount = dataReader.nextInt();
+      winPercentage = dataReader.nextDouble();
       
-      answer = dataReader.nextLine();
+      percent = new DecimalFormat("0.0%");
       
-      while(dataReader.hasNext() == true) {
-         String word = dataReader.nextLine();
-         if(word.equals("null"))
-            break;
-         else {
-            for(int i = 0; i < word.length(); i++) {
-               board[row][i].setText(word.charAt(i) + "");
-            }
-            checkWord(word, answer);
-         }
-      }
       
-      wordGuess = "";
-      validKeys = new String[28];
-      fillValidKeyCodeArray(validKeys);
-      addKeyListener(new KeyDetector());
-      setFocusable(true);
+      winCountLabel = new JLabel("Total Wins: " + winCount);
+      winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage));
+      
+      add(winCountLabel);
+      add(winPercentLabel);
    }
-  
+   
    /**
-   *Randomly selects a 5 letter word from answers.txt and assigns it to answer
-   */ 
-   public void assignAnswer()
+   *Saves the current game data in an external text file via a PrintWriter instance
+   @see PrintWriter
+   */
+   public void saveData()
    {
-      int line = (int)(Math.random() * 2039 + 1);
+      PrintWriter dataFile = null;
       try {
-         answerSelect = new Scanner(new File("answers.txt"));
+         dataFile = new PrintWriter(new FileWriter("stats.txt"));
       }
-      catch(FileNotFoundException e) {
-         System.out.println("wrong file oopsies");
-         System.exit(0);
-      }
-      for(int i = 0; i < line; i++)
-         answer = answerSelect.next();
-      System.out.println(answer);
-   }
-   
-   /**
-   *Checks if the word that the user inputs is a valid word. Also checks for special cases (incorrect word length, special characters, etc.). Returns a boolean value
-   @return     boolean
-   */
-   public boolean checkWordValid(String input)
-   {
-      try {
-         wordFinder = new Scanner(new File("guesses.txt"));
-      }
-      catch(FileNotFoundException e) {
-         System.out.println("wrong file oopsies");
-         System.exit(0);
-      }
-      int count = 0;
-      String[] array = new String[12947];
-      for(int i = 0; i < 12947; i++)
-         array[i] = wordFinder.nextLine();
-         
-      try {
-         if(input.length() != 5)
-            throw new StringBadLengthException("String is not five characters - try again");
-      }
-      catch(StringBadLengthException e) {
-         return false;
+      catch(Exception e) {
+         JOptionPane.showMessageDialog(null, "The game could not be saved.");
       }
       
-      if(Searcher.linear(array, input.toLowerCase()))
-         return true;
-      return false;
-   }
-   
-   /**
-   *Checks if the word that the user inputs is equal to answer and will change the colors of Gameboard squares or display a winner message accordingly
-   */
-   public void checkWord(String input, String answerin)
-   {
-      if(checkWordValid(input)) {
-         answerin = answerin.toUpperCase();
-         for(int i = 0; i < input.length(); i++) {
-            char answerSelect = input.charAt(i);
-            char ans = answerin.charAt(i);
-            if(answerSelect == ans) {
-               board[row][i].setBackground(new Color(106, 170, 100));
-               board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + answerSelect, 2);
+      JLabel[][] board = Gameboard.getBoard();
+      
+      dataFile.println(winCount);
+      dataFile.println(gameCount);
+      dataFile.println(winPercentage);
+      
+      dataFile.println(Gameboard.getAnswer().toUpperCase());
+      
+      for(int r = 0; r < board.length; r++) {
+         for(int c = 0; c < board[0].length; c++) {
+            if(board[r][c].getText().equals("     ")) {
+               dataFile.print("null");
+               break;
             }
-            else if(answerin.contains("" + answerSelect) && answerSelect != ans) {
-               board[row][i].setBackground(new Color(201, 180, 88));
-               board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + answerSelect, 1);
-            }
-            else if(answerSelect != ans && !answer.contains("" + answerSelect)) {
-               board[row][i].setBackground(new Color(120, 124, 126));
-               board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + answerSelect, 0);
-            }
+            else
+               dataFile.print(board[r][c].getText().replace(" ", ""));
          }
-         space = 0;
-         row++;
-         guess++;
-         if(input.equalsIgnoreCase(answerin)) {
-            win = true;
-            winner();
-         }
-         else if(guess == 6) {
-            win = false;
-            winner();
-         }
-         wordGuess = "";
+         dataFile.println();
       }
-      else
-         System.out.println("Invalid word. Please try again.");
+      dataFile.close();
    }
    
    /**
-   *Updates the JLabel matrix to display the letter that the player has typed
+   *Updates the scoreboard after a game is completed
    */
-   public void inputKeyChar(char c)
+   public void update()
    {
-      board[row][space].setText("" + c);
+      gameCount++;
+      if(Gameboard.winner())
+         winCount++;
+      winPercentage = (double)(winCount)/(double)(gameCount);
+      winCountLabel.setText("Total Wins: " + winCount);
+      winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
+   }
+   
+   //modifier methods
+   
+   /**
+   *Sets the win percentage to the double input x
+   @param x    assigns x to winPercentage
+   */
+   public void setWinPercent(double x)
+   {
+      winPercentage = x;
    }
    
    /**
-   *Sets the entire JLabel matrix to blank, resets guess and answer
+   *Sets the total win count to the int input x
+   @param x    assigns x to winCount
    */
-   public void reset()
+   public void setWinCount(int x)
    {
-      assignAnswer();
-      guess = row = space = 0;
-      for(int r = 0; r < 6; r++) {
-         for(int c = 0; c < 5; c++) {
-            board[r][c].setBackground(Color.WHITE);
-            board[r][c].setForeground(Color.BLACK);
-            board[r][c].setText("     ");
-         }
-      }
+      winCount = x;
    }
    
    /**
-   *Displays a message depending on whether the player has won or lost
+   *Sets the total game count to the int input x
+   @param x    assigns x to gameCount
    */
-   public static boolean winner()
+   public void setGameCount(int x)
    {
-      WordlePanel.getResetButton().setEnabled(true);
-      if(win)
-         return true;
-      return false;
+      gameCount = x;
+   }
+   
+   //accessor methods
+   
+   /**
+   *Returns the percentage of games won as a double
+   @return     winPercentage
+   */
+   public double getWinPercent()
+   {
+      return winPercentage;
    }
    
    /**
-   *Returns the current answer to the Wordle
+   *Returns the number of games won as an int
+   @return     winCount
    */
-   public static String getAnswer()
+   public int getWinCount()
    {
-      return answer;
+      return winCount;
    }
    
    /**
-   *Manually fills the array of valid key codes
+   *Returns the total number of games played as an int
+   @return     gameCount
    */
-   public void fillValidKeyCodeArray(String[] arr)
+   public int getGameCount()
    {
-      arr[0] = "Q";
-      arr[1] = "W";
-      arr[2] = "E";
-      arr[3] = "R";
-      arr[4] = "T";
-      arr[5] = "Y";
-      arr[6] = "U";
-      arr[7] = "I";
-      arr[8] = "O";
-      arr[9] = "P";
-      arr[10] = "A";
-      arr[11] = "S";
-      arr[12] = "D";
-      arr[13] = "F";
-      arr[14] = "G";
-      arr[15] = "H";
-      arr[16] = "J";
-      arr[17] = "K";
-      arr[18] = "L";
-      arr[19] = "Z";
-      arr[20] = "X";
-      arr[21] = "C";
-      arr[22] = "V";
-      arr[23] = "B";
-      arr[24] = "N";
-      arr[25] = "M";
-      arr[26] = "ENTER";
-      arr[27] = "BACKSPACE";
-   }
-   
-   /**
-   *Returns the current board matrix
-   @return     JLabel[][]
-   */
-   public static JLabel[][] getBoard()
-   {
-      return board;
-   }
-   
-   /**
-   *Returns the current guess number
-   @return     int
-   */
-   public static int getGuess()
-   {
-      return guess;
-   }
-   
-   //the key listener that we will use to update the board as keys are typed
-   private class KeyDetector extends KeyAdapter
-   {
-      public void keyPressed(KeyEvent e)
-      {
-         int keyCode = e.getKeyCode();
-         String keyName = KeyEvent.getKeyText(keyCode);
-         keyName = keyName.toUpperCase();
-         //System.out.println(keyName);
-         
-         if((!keyName.equals("BACKSPACE") && !keyName.equals("ENTER")) && Searcher.linear(validKeys, keyName)) {
-            if(space == 5)
-               return;
-            board[row][space].setText(" " + keyName + " ");
-            space++;
-            wordGuess = wordGuess + keyName;
-         }
-         else if(keyName.equals("BACKSPACE")) {
-            if(space == 0) {
-               space = 1;
-               wordGuess = wordGuess + " ";
-            }
-            board[row][space - 1].setText("   ");
-            space--;
-            wordGuess = wordGuess.substring(0, wordGuess.length() - 1);
-         }
-         else if(keyName.equals("ENTER"))
-            checkWord(wordGuess, answer);
-         else
-            return;
-      }
+      return gameCount;
    }
 }
