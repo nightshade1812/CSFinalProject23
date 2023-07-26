@@ -1,4 +1,4 @@
-\import javax.swing.*; //JPanel class and other graphics objects
+import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.awt.event.*; //Listener class
 import java.util.*; //Scanner class
@@ -167,6 +167,8 @@ public class Gameboard extends JPanel
    public void checkWord(String input, String answerin)
    {
       if(checkWordValid(input)) {
+         SoundEffect checker = new SoundEffect("pageturn.wav");
+         checker.play();
          answerin = answerin.toUpperCase();
          for(int i = 0; i < input.length(); i++) {
             char answerSelect = input.charAt(i);
@@ -193,10 +195,14 @@ public class Gameboard extends JPanel
          if(input.equalsIgnoreCase(answerin)) {
             win = true;
             winner();
+            SoundEffect winner = new SoundEffect("win.wav");
+            winner.play();
          }
          else if(guess == 6) {
             win = false;
             winner();
+            SoundEffect loser = new SoundEffect("loser.wav");
+            loser.play();
          }
          wordGuess = "";
       }
@@ -234,7 +240,7 @@ public class Gameboard extends JPanel
    public static boolean winner()
    {
       WordlePanel.getResetButton().setEnabled(true);
-      if(win)
+      if(win == true)
          return true;
       return false;
    }
