@@ -101,10 +101,15 @@ public class Gameboard extends JPanel
             for(int i = 0; i < word.length(); i++) {
                board[row][i].setText(word.charAt(i) + "");
             }
-            checkWord(word, answer);
+            if(checkWordValid(word) == true)
+               checkWord(word, answer);
+            else
+               for(int i = 0; i < word.length(); i++) {
+               board[row][i].setText("     ");
+            }
          }
       }
-      
+      System.out.println(answer);
       wordGuess = "";
       validKeys = new String[28];
       fillValidKeyCodeArray(validKeys);
@@ -127,7 +132,7 @@ public class Gameboard extends JPanel
       }
       for(int i = 0; i < line; i++)
          answer = answerSelect.next();
-      //System.out.println(answer);
+      System.out.println(answer);
    }
    
    /**
@@ -177,8 +182,7 @@ public class Gameboard extends JPanel
             inputChars[i] = input.charAt(i);
             answerChars[i] = answerin.charAt(i);
          }
-         System.out.println(DoubleLetterReader.readDoubles(inputChars));
-         System.out.println(DoubleLetterReader.readDoubles(answerChars));
+         
          for(int i = 0; i < input.length(); i++) {
             if(inputChars[i] == answerChars[i]) {
                board[row][i].setBackground(new Color(106, 170, 100));
