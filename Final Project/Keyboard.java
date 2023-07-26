@@ -111,10 +111,13 @@ public class Keyboard extends JPanel
 /**
 *Resets the colors of a Keyboard object
 */    
-   public void reset()
+   public void reset(String style)
    {
       for(int k = 0; k < 26; k++) {
-         keyboard[k].setBackground(Color.WHITE);
+         if(style.equals("Classic"))
+            keyboard[k].setBackground(Color.WHITE);
+         else if(style.equals("Neon"))
+            keyboard[k].setBackground(new Color(255, 240, 255));
          keyboard[k].setForeground(Color.BLACK);
       }
    }
@@ -122,20 +125,32 @@ public class Keyboard extends JPanel
 /**
 *Updates the colors of individual letters on the QWERTY keyboard display depending on the player's guesses. 
 */  
-   public static void updateKeyboard(String letter, int matchLevel)
+   public static void updateKeyboard(String letter, int matchLevel, String style)
    {
       String alphabet = "QWERTYUIOPASDFGHJKLZXCVBNM";
       int i = alphabet.indexOf(letter);
       if(matchLevel == 0) {
-         keyboard[i].setBackground(new Color(120, 124, 126));
+         if(style.equals("Classic"))
+            keyboard[i].setBackground(new Color(120, 124, 126)); //Classic Wordle cool grey
+         else if(style.equals("Neon"))
+            keyboard[i].setBackground(new Color(100, 10, 190)); //Neon blurple
+            
          keyboard[i].setForeground(Color.WHITE);
       }
       else if(matchLevel == 1) {
-         keyboard[i].setBackground(new Color(201, 180, 88));
+         if(style.equals("Classic"))
+            keyboard[i].setBackground(new Color(201, 180, 88)); //Classic Wordle yellow
+         else if(style.equals("Neon"))
+            keyboard[i].setBackground(new Color(255, 196, 0)); //Neon orangeish yellow
+
          keyboard[i].setForeground(Color.WHITE);
       }
       else {
-         keyboard[i].setBackground(new Color(106, 170, 100));
+         if(style.equals("Classic"))
+            keyboard[i].setBackground(new Color(106, 170, 100)); //Classic Wordle green
+         else if(style.equals("Neon"))
+            keyboard[i].setBackground(new Color(12, 245, 190)); //Neon turquoiseish green
+
          keyboard[i].setForeground(Color.WHITE);
       }
    }
