@@ -159,8 +159,6 @@ public class Gameboard extends JPanel
    */
    public void checkWord(String input, String answerin)
    {
-      boolean doublesAccounted = false;
-      
       if(checkWordValid(input)) {
          answerin = answerin.toUpperCase();
          for(int i = 0; i < input.length(); i++) {
@@ -170,15 +168,11 @@ public class Gameboard extends JPanel
                board[row][i].setBackground(new Color(106, 170, 100));
                board[row][i].setForeground(Color.WHITE);
                Keyboard.updateKeyboard("" + answerSelect, 2);
-               if(DoubleLetterReader.readDoubles(input).length() != 0)
-                  doublesAccounted = true;
             }
-            else if(answerin.contains("" + answerSelect) && answerSelect != ans && doublesAccounted == false) {
+            else if(answerin.contains("" + answerSelect) && answerSelect != ans) {
                board[row][i].setBackground(new Color(201, 180, 88));
                board[row][i].setForeground(Color.WHITE);
                Keyboard.updateKeyboard("" + answerSelect, 1);
-               if(DoubleLetterReader.readDoubles(input).length() != 0)
-                  doublesAccounted = true;
             }
             else if(answerSelect != ans && !answer.contains("" + answerSelect)) {
                board[row][i].setBackground(new Color(120, 124, 126));
