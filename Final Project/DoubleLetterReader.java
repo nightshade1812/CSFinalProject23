@@ -5,8 +5,10 @@ public class DoubleLetterReader
       String doubledChars = "";
       for(int r = 0; r < array.length; r++) {
          for(int i = 0; i < array.length; i++) {
-            if(array[r] == array[i]) {
-               doubledChars = doubledChars + array[i];
+            if(array[r] == array[i] && r != i) {
+               char addedChar = array[i];
+               if(!doubledChars.contains("" + addedChar))
+                  doubledChars = doubledChars + addedChar;
                break;
             }
          }
