@@ -51,15 +51,36 @@ public class Gameboard extends JPanel
    private String[] validKeys;
    
    /**
-   *A scanner that will be used to search files for a certain word
+   *A scanner that will be used to search a file and find a random word to be the answer.
    */
-   private Scanner answerSelect, wordFinder;
+   private Scanner answerSelect;
+   
+   /**
+   *A scanner that will be used to search a file and find whether or not a word is a valid guess.
+   */
+   private Scanner wordFinder;
+   
+   /**
+   *A Scanner that reads a data file to put the game back at its last known state.
+   @see Scanner
+   */
+   private Scanner dataReader;
 
    /**
    *Creates a new Gameboard object with a JLabel matrix
    */
    public Gameboard()
    {
+      try {
+         dataReader = new Scanner(new File("stats.txt"));
+      }
+      catch(FileNotFoundException e) {
+         
+      }
+      
+      /*for(int i = 0; i < 3; i++)
+         dataReader.nextLine();*/
+   
       setLayout(new GridLayout(6, 5, 2, 2));
       
       board = new JLabel[6][5];
@@ -138,6 +159,8 @@ public class Gameboard extends JPanel
    */
    public void checkWord(String input, String answerin)
    {
+      boolean doublesAccounted = false;
+      
       if(checkWordValid(input)) {
          answerin = answerin.toUpperCase();
          for(int i = 0; i < input.length(); i++) {
@@ -147,11 +170,15 @@ public class Gameboard extends JPanel
                board[row][i].setBackground(new Color(106, 170, 100));
                board[row][i].setForeground(Color.WHITE);
                Keyboard.updateKeyboard("" + answerSelect, 2);
+               if(DoubleLetterReader.readDoubles(input).length() != 0)
+                  doublesAccounted = true;
             }
-            else if(answerin.contains("" + answerSelect) && answerSelect != ans) {
+            else if(answerin.contains("" + answerSelect) && answerSelect != ans && doublesAccounted == false) {
                board[row][i].setBackground(new Color(201, 180, 88));
                board[row][i].setForeground(Color.WHITE);
                Keyboard.updateKeyboard("" + answerSelect, 1);
+               if(DoubleLetterReader.readDoubles(input).length() != 0)
+                  doublesAccounted = true;
             }
             else if(answerSelect != ans && !answer.contains("" + answerSelect)) {
                board[row][i].setBackground(new Color(120, 124, 126));
