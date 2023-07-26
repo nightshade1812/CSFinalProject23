@@ -177,7 +177,8 @@ public class Gameboard extends JPanel
             inputChars[i] = input.charAt(i);
             answerChars[i] = answerin.charAt(i);
          }
-         
+         System.out.println(DoubleLetterReader.readDoubles(inputChars));
+         System.out.println(DoubleLetterReader.readDoubles(answerChars));
          for(int i = 0; i < input.length(); i++) {
             if(inputChars[i] == answerChars[i]) {
                board[row][i].setBackground(new Color(106, 170, 100));
