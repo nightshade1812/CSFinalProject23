@@ -102,7 +102,7 @@ public class Gameboard extends JPanel
                board[row][i].setText(word.charAt(i) + "");
             }
             if(checkWordValid(word) == true)
-               checkWord(word, answer);
+               checkWord(word, answer, WordlePanel.getStyleName());
             else
                for(int i = 0; i < word.length(); i++) {
                board[row][i].setText("     ");
@@ -169,7 +169,7 @@ public class Gameboard extends JPanel
    /**
    *Checks if the word that the user inputs is equal to answer and will change the colors of Gameboard squares or display a winner message accordingly
    */
-   public void checkWord(String input, String answerin)
+   public void checkWord(String input, String answerin, String style)
    {
       if(checkWordValid(input)) {
          SoundEffect checker = new SoundEffect("pageturn.wav");
@@ -185,19 +185,31 @@ public class Gameboard extends JPanel
          
          for(int i = 0; i < input.length(); i++) {
             if(inputChars[i] == answerChars[i]) {
-               board[row][i].setBackground(new Color(106, 170, 100));
+               if(style.equals("Classic"))
+                  board[row][i].setBackground(new Color(106, 170, 100));
+               else if(style.equals("Neon"))
+                  board[row][i].setBackground(new Color(12, 245, 190));
+                  
                board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + inputChars[i], 2);
+               Keyboard.updateKeyboard("" + inputChars[i], 2, WordlePanel.getStyleName());
             }
             else if(answerin.contains("" + inputChars[i]) && inputChars[i] != answerChars[i]) {
-               board[row][i].setBackground(new Color(201, 180, 88));
+               if(style.equals("Classic"))
+                  board[row][i].setBackground(new Color(201, 180, 88));
+               else if(style.equals("Neon"))
+                  board[row][i].setBackground(new Color(255, 196, 0));
+                  
                board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + inputChars[i], 1);
+               Keyboard.updateKeyboard("" + inputChars[i], 1, WordlePanel.getStyleName());
             }
             else if(inputChars[i] != answerChars[i] && !answer.contains("" + inputChars[i])) {
-               board[row][i].setBackground(new Color(120, 124, 126));
+               if(style.equals("Classic"))
+                  board[row][i].setBackground(new Color(120, 124, 126));
+               else if(style.equals("Neon"))
+                  board[row][i].setBackground(new Color(100, 10, 190));
+                  
                board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + inputChars[i], 0);
+               Keyboard.updateKeyboard("" + inputChars[i], 0, WordlePanel.getStyleName());
             }
          }
          space = 0;
@@ -248,6 +260,55 @@ public class Gameboard extends JPanel
       }
       Scoreboard.getGameStatusLabel().setText("      ");
       Scoreboard.getAnswerDisplay().setText("      ");
+   }
+   
+   /**
+   *
+   */
+   public void changeStyle(String style)
+   {
+      if(style.equals("Neon"))
+         {
+            for(int r = 0; r < board.length; r++)
+               for(int c = 0; c < board[0].length; c++)
+               {
+                  if(board[r][c].getBackground().equals(new Color(106, 170, 100)))  // Classic Wordle Green
+                     board[r][c].setBackground(new Color(12, 245, 190)); //Neon turquoisish green
+                     
+                  else if(board[r][c].getBackground().equals(new Color(201, 180, 88))) // Classic Wordle Yellow
+                     board[r][c].setBackground(new Color(255, 196, 0)); //Neon orangeish yellow
+                     
+                  else if(board[r][c].getBackground().equals(new Color(120, 124, 126))) //Classic Wordle cool grey
+                  {
+                    board[r][c].setBackground(new Color(100, 10, 190)); //Neon blurple
+                  }
+                  else if(board[r][c].getBackground().equals(Color.white))
+                  {
+                   board[r][c].setBackground(new Color(255, 240, 255)); //Neon light pink
+                  }
+               }
+         }
+         else if(style.equals("Classic"))
+         {
+            for(int r = 0; r < board.length; r++)
+               for(int c = 0; c < board[0].length; c++)
+               {
+                  if(board[r][c].getBackground().equals(new Color(12, 245, 190)))  //Neon turquoisish green
+                     board[r][c].setBackground(new Color(106, 170, 100)); // Classic Wordle Green 
+                     
+                  else if(board[r][c].getBackground().equals(new Color(255, 196, 0))) //Neon orangeish yellow
+                     board[r][c].setBackground(new Color(201, 180, 88)); // Classic Wordle Yellow
+                     
+                  else if(board[r][c].getBackground().equals(new Color(100, 10, 190))) //Neon blurple
+                  {
+                    board[r][c].setBackground(new Color(120, 124, 126)); //Classic Wordle cool grey
+                  }
+                  else if(board[r][c].getBackground().equals(new Color(255, 240, 255)))//Neon light pink
+                  {
+                   board[r][c].setBackground(Color.white); 
+                  }
+               }
+         }
    }
    
    /**
@@ -349,7 +410,7 @@ public class Gameboard extends JPanel
             wordGuess = wordGuess.substring(0, wordGuess.length() - 1);
          }
          else if(keyName.equals("ENTER"))
-            checkWord(wordGuess, answer);
+            checkWord(wordGuess, answer, WordlePanel.getStyleName());
          else
             return;
       }
