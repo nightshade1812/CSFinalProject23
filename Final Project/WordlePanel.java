@@ -52,19 +52,29 @@ public class WordlePanel extends JPanel
    */
    public WordlePanel()
    {
-      //initializing the objects we will need
       setLayout(new FlowLayout());
       
-      gameboard = new Gameboard();
-      scoreboard = new Scoreboard();
-      keyboard = new Keyboard();
+      JLabel title = new JLabel("Wordle");
+      title.setFont(new Font("Serif", Font.BOLD, 40));
+      add(title);
+
+         JPanel game = new JPanel();
+         game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
+         
+         gameboard = new Gameboard();
+         scoreboard = new Scoreboard();      
+         keyboard = new Keyboard();
+         keyboard.setPreferredSize(new Dimension(500,180));         
+         
+         game.add(gameboard);
+         game.add(keyboard);
+         game.add(scoreboard);         
+         
+      add(game);
+      
       reset = new JButton("Reset");
       reset.setEnabled(false);
       reset.addActionListener(new ResetListener());
-      
-      add(scoreboard);
-      add(gameboard);
-      add(keyboard);
       add(reset);
    }
    
