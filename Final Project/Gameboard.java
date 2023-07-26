@@ -171,23 +171,28 @@ public class Gameboard extends JPanel
          checker.play();
          Scoreboard.getGameStatusLabel().setText("     ");
          answerin = answerin.toUpperCase();
+         char[] inputChars = new char[5];
+         char[] answerChars = new char[5];
          for(int i = 0; i < input.length(); i++) {
-            char answerSelect = input.charAt(i);
-            char ans = answerin.charAt(i);
-            if(answerSelect == ans) {
+            inputChars[i] = input.charAt(i);
+            answerChars[i] = answerin.charAt(i);
+         }
+         
+         for(int i = 0; i < input.length(); i++) {
+            if(inputChars[i] == answerChars[i]) {
                board[row][i].setBackground(new Color(106, 170, 100));
                board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + answerSelect, 2);
+               Keyboard.updateKeyboard("" + inputChars[i], 2);
             }
-            else if(answerin.contains("" + answerSelect) && answerSelect != ans) {
+            else if(answerin.contains("" + inputChars[i]) && inputChars[i] != answerChars[i]) {
                board[row][i].setBackground(new Color(201, 180, 88));
                board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + answerSelect, 1);
+               Keyboard.updateKeyboard("" + inputChars[i], 1);
             }
-            else if(answerSelect != ans && !answer.contains("" + answerSelect)) {
+            else if(inputChars[i] != answerChars[i] && !answer.contains("" + inputChars[i])) {
                board[row][i].setBackground(new Color(120, 124, 126));
                board[row][i].setForeground(Color.WHITE);
-               Keyboard.updateKeyboard("" + answerSelect, 0);
+               Keyboard.updateKeyboard("" + inputChars[i], 0);
             }
          }
          space = 0;
@@ -204,7 +209,7 @@ public class Gameboard extends JPanel
             win = false;
             winner();
             Scoreboard.getGameStatusLabel().setText("Sorry, you lost! The word was: ");
-            Scoreboard.getAnswerDisplay().setText(answer);
+            Scoreboard.getAnswerDisplay().setText(answer.toUpperCase());
             SoundEffect loser = new SoundEffect("loser.wav");
             loser.play();
          }
