@@ -1,4 +1,3 @@
-
 import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.awt.event.*; //Listener class
@@ -74,6 +73,7 @@ public class WordlePanel extends JPanel
    public WordlePanel()
    {
       styleName = "Classic";
+   
       GridBagLayout gridbag = new GridBagLayout();
       GridBagConstraints c = new GridBagConstraints();
       
@@ -238,7 +238,7 @@ public class WordlePanel extends JPanel
          SoundEffect clear = new SoundEffect("buttonclick.wav");
          clear.play();
          scoreboard.clearData();
-         keyboard.reset();
+         keyboard.reset(styleName);
          gameboard.reset();
       }
    }
