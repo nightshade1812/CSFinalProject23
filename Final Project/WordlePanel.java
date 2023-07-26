@@ -73,21 +73,25 @@ public class WordlePanel extends JPanel
       gameContainer.setBackground(Color.white);
       
       title = new JLabel("     Wordle     ");
-      title.setFont(new Font("Serif", Font.BOLD, 40));
+      title.setFont(new Font("Arial", Font.BOLD, 40));
       gameContainer.add(title);
-
-         JPanel game = new JPanel();
-         game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
+   
+      JPanel game = new JPanel();
+      game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
          
-         gameboard = new Gameboard();
-         scoreboard = new Scoreboard();      
-         keyboard = new Keyboard();
-         keyboard.setPreferredSize(new Dimension(500,180));
-         keyboard.setOpaque(true);
-         keyboard.setBackground(Color.BLACK);
+      keyboard = new Keyboard();
+      keyboard.setPreferredSize(new Dimension(500,180));
+      keyboard.setOpaque(true);
+      keyboard.setBackground(Color.BLACK);
+      reset = new JButton("Reset");
+      reset.setEnabled(false);
+      reset.addActionListener(new ResetListener());
+      reset.setPreferredSize(new Dimension(100,100));
+      gameboard = new Gameboard();
+      scoreboard = new Scoreboard();      
           
-         game.add(gameboard);
-         game.add(keyboard);
+      game.add(gameboard);
+      game.add(keyboard);
                  
       gameContainer.add(game);
       
@@ -99,10 +103,6 @@ public class WordlePanel extends JPanel
       c.gridheight = 3;
       add(gameContainer, c);
       
-      reset = new JButton("Reset");
-      reset.setEnabled(false);
-      reset.addActionListener(new ResetListener());
-      reset.setPreferredSize(new Dimension(100,100));
       
       c.fill = GridBagConstraints.HORIZONTAL;
       c.weightx = 0.5;
