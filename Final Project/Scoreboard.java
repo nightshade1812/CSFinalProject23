@@ -39,6 +39,12 @@ public class Scoreboard extends JPanel
    private JLabel winCountLabel;
    
    /**
+   *A JLabel object that displays various game statuses (invalid word, winner/loser, etc.).
+   @see JLabel
+   */
+   private static JLabel gameStatusLabel;
+   
+   /**
    *A DecimalFormat object that formats the win percentage.
    @see DecimalFormat
    */
@@ -55,7 +61,7 @@ public class Scoreboard extends JPanel
    */
    public Scoreboard()
    {
-      setLayout(new FlowLayout()); //might change to another layout later on
+      setLayout(new GridLayout(2, 1));
       
       try {
          dataReader = new Scanner(new File("stats.txt"));
@@ -70,12 +76,20 @@ public class Scoreboard extends JPanel
       
       percent = new DecimalFormat("0.0%");
       
+      JPanel subpanel = new JPanel();
+      subpanel.setLayout(new GridLayout(2, 1));
       
-      winCountLabel = new JLabel("Total Wins: " + winCount);
-      winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage));
+      winCountLabel = new JLabel("Total Wins: " + winCount, SwingConstants.CENTER);
+      winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage), SwingConstants.CENTER);
+      gameStatusLabel = new JLabel("    ");
+      winCountLabel.setFont(new Font("Arial", Font.BOLD, 14));
+      winPercentLabel.setFont(new Font("Arial", Font.BOLD, 14));
+      gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 14));
       
-      add(winCountLabel);
-      add(winPercentLabel);
+      subpanel.add(winCountLabel);
+      subpanel.add(winPercentLabel);
+      add(subpanel);
+      add(gameStatusLabel);
    }
    
    /**
@@ -183,5 +197,14 @@ public class Scoreboard extends JPanel
    public int getGameCount()
    {
       return gameCount;
+   }
+   
+   /**
+   *Returns the game status label
+   @return     gameStatusLabel
+   */
+   public static JLabel getGameStatusLabel()
+   {
+      return gameStatusLabel;
    }
 }
