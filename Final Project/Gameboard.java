@@ -203,7 +203,8 @@ public class Gameboard extends JPanel
          else if(guess == 6) {
             win = false;
             winner();
-            Scoreboard.getGameStatusLabel().setText("Sorry, you lost! The word was " + answer);
+            Scoreboard.getGameStatusLabel().setText("Sorry, you lost! The word was: ");
+            Scoreboard.getAnswerDisplay().setText(answer);
             SoundEffect loser = new SoundEffect("loser.wav");
             loser.play();
          }
@@ -235,7 +236,8 @@ public class Gameboard extends JPanel
             board[r][c].setText("     ");
          }
       }
-      Scoreboard.getGameStatusLabel().setText("     ");
+      Scoreboard.getGameStatusLabel().setText("      ");
+      Scoreboard.getAnswerDisplay().setText("      ");
    }
    
    /**
