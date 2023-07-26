@@ -68,7 +68,6 @@ public class Scoreboard extends JPanel
    public Scoreboard()
    {
       setLayout(new GridLayout(3, 1));
-      setOpaque(true);
          
       try {
          dataReader = new Scanner(new File("stats.txt"));
@@ -90,23 +89,11 @@ public class Scoreboard extends JPanel
       winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage), SwingConstants.CENTER);
       gameStatusLabel = new JLabel("    ", SwingConstants.CENTER);  
       answerDisplay = new JLabel("    ", SwingConstants.CENTER);
-      
       winCountLabel.setFont(new Font("Arial", Font.BOLD, 14));
       winPercentLabel.setFont(new Font("Arial", Font.BOLD, 14));
-      gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 18));
+      gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 14));
       answerDisplay.setFont(new Font("Arial", Font.BOLD, 40));
-      
-      winCountLabel.setOpaque(true);
-      winPercentLabel.setOpaque(true);
-      gameStatusLabel.setOpaque(true);
-      answerDisplay.setOpaque(true);
-      
-      winCountLabel.setBackground(Color.white);
-      winPercentLabel.setBackground(Color.white);
-      gameStatusLabel.setBackground(Color.white);
-      answerDisplay.setBackground(Color.white);
-      
-      answerDisplay.setForeground(new Color(106, 170, 100));
+      answerDisplay.setForeground(Color.RED);
       
       subpanel.add(winCountLabel);
       subpanel.add(winPercentLabel);
@@ -136,15 +123,33 @@ public class Scoreboard extends JPanel
       dataFile.println(winPercentage);
       dataFile.println(Gameboard.getAnswer().toUpperCase());
       
+      int printNumCount = 0;
+      boolean nullPrinted = false;
+      
       for(int r = 0; r < board.length; r++) {
          for(int c = 0; c < board[0].length; c++) {
             if(board[r][c].getText().equals("     ")) {
-               dataFile.print("null");
-               break;
+               if(nullPrinted == false) {
+                  dataFile.print("null");
+                  printNumCount = 5;
+                  nullPrinted = true;
+                  break;
+               }
+               else {
+                  while(printNumCount < 5) {
+                     dataFile.print("X");
+                     printNumCount++;
+                  }
+               }
             }
-            else
+            else {
                dataFile.print(board[r][c].getText().replace(" ", ""));
+               printNumCount++;
+               nullPrinted = true;
+            }
          }
+         printNumCount = 0;
+         nullPrinted = false;
          dataFile.println();
       }
       dataFile.close();
@@ -161,31 +166,6 @@ public class Scoreboard extends JPanel
       winPercentage = (double)(winCount)/(double)(gameCount);
       winCountLabel.setText("Total Wins: " + winCount);
       winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
-   }
-   
-   /**
-   *Updates the colors of the scoreboard
-   */
-   public void changeStyle(String style)
-   {
-      if(style.equals("Neon"))
-         {
-            winCountLabel.setBackground(new Color(255, 240, 255));
-            winPercentLabel.setBackground(new Color(255, 240, 255));
-            gameStatusLabel.setBackground(new Color(255, 240, 255));
-            answerDisplay.setBackground(new Color(255, 240, 255));
-            
-            answerDisplay.setForeground(new Color(12, 245, 190));
-         }
-         else if(style.equals("Classic"))
-         {
-            winCountLabel.setBackground(Color.white);
-            winPercentLabel.setBackground(Color.white);
-            gameStatusLabel.setBackground(Color.white);
-            answerDisplay.setBackground(Color.white);
-            
-            answerDisplay.setForeground(new Color(106, 170, 100));
-         }
    }
    
    //modifier methods
