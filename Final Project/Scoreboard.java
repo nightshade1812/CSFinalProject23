@@ -45,6 +45,12 @@ public class Scoreboard extends JPanel
    private static JLabel gameStatusLabel;
    
    /**
+   *A JLabel object that displays the answer when the player loses.
+   @see JLabel
+   */
+   private static JLabel answerDisplay;
+   
+   /**
    *A DecimalFormat object that formats the win percentage.
    @see DecimalFormat
    */
@@ -61,8 +67,8 @@ public class Scoreboard extends JPanel
    */
    public Scoreboard()
    {
-      setLayout(new GridLayout(2, 1));
-      
+      setLayout(new GridLayout(3, 1));
+         
       try {
          dataReader = new Scanner(new File("stats.txt"));
       }
@@ -81,15 +87,19 @@ public class Scoreboard extends JPanel
       
       winCountLabel = new JLabel("Total Wins: " + winCount, SwingConstants.CENTER);
       winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage), SwingConstants.CENTER);
-      gameStatusLabel = new JLabel("    ", SwingConstants.CENTER);
+      gameStatusLabel = new JLabel("    ", SwingConstants.CENTER);  
+      answerDisplay = new JLabel("    ", SwingConstants.CENTER);
       winCountLabel.setFont(new Font("Arial", Font.BOLD, 14));
       winPercentLabel.setFont(new Font("Arial", Font.BOLD, 14));
       gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 14));
+      answerDisplay.setFont(new Font("Arial", Font.BOLD, 40));
+      answerDisplay.setForeground(Color.RED);
       
       subpanel.add(winCountLabel);
       subpanel.add(winPercentLabel);
       add(subpanel);
       add(gameStatusLabel);
+      add(answerDisplay);
    }
    
    /**
@@ -111,7 +121,6 @@ public class Scoreboard extends JPanel
       dataFile.println(winCount);
       dataFile.println(gameCount);
       dataFile.println(winPercentage);
-      
       dataFile.println(Gameboard.getAnswer().toUpperCase());
       
       for(int r = 0; r < board.length; r++) {
@@ -206,5 +215,14 @@ public class Scoreboard extends JPanel
    public static JLabel getGameStatusLabel()
    {
       return gameStatusLabel;
+   }
+   
+   /**
+   *Returns the answer display label
+   @return     answerDisplay
+   */
+   public static JLabel getAnswerDisplay()
+   {
+      return answerDisplay;
    }
 }
