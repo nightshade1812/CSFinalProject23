@@ -169,6 +169,7 @@ public class Gameboard extends JPanel
       if(checkWordValid(input)) {
          SoundEffect checker = new SoundEffect("pageturn.wav");
          checker.play();
+         Scoreboard.getGameStatusLabel().setText("     ");
          answerin = answerin.toUpperCase();
          for(int i = 0; i < input.length(); i++) {
             char answerSelect = input.charAt(i);
@@ -195,19 +196,21 @@ public class Gameboard extends JPanel
          if(input.equalsIgnoreCase(answerin)) {
             win = true;
             winner();
+            Scoreboard.getGameStatusLabel().setText("You win! Congratulations.");
             SoundEffect winner = new SoundEffect("win.wav");
             winner.play();
          }
          else if(guess == 6) {
             win = false;
             winner();
+            Scoreboard.getGameStatusLabel().setText("Sorry, you lost! The word was " + answer);
             SoundEffect loser = new SoundEffect("loser.wav");
             loser.play();
          }
          wordGuess = "";
       }
       else
-         System.out.println("Invalid word. Please try again.");
+         Scoreboard.getGameStatusLabel().setText("Word invalid. Please try again.");
    }
    
    /**
@@ -232,6 +235,7 @@ public class Gameboard extends JPanel
             board[r][c].setText("     ");
          }
       }
+      Scoreboard.getGameStatusLabel().setText("     ");
    }
    
    /**
