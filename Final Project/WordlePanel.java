@@ -73,6 +73,7 @@ public class WordlePanel extends JPanel
    */
    public WordlePanel()
    {
+      styleName = "Classic";
       GridBagLayout gridbag = new GridBagLayout();
       GridBagConstraints c = new GridBagConstraints();
       
@@ -176,7 +177,7 @@ public class WordlePanel extends JPanel
    {
       scoreboard.update();
       gameboard.reset();
-      keyboard.reset();
+      keyboard.reset(styleName);
       reset.setEnabled(false);
    }
    
