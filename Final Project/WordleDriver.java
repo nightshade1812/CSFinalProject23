@@ -20,7 +20,7 @@ public class WordleDriver
    {
       public void windowClosing(WindowEvent windowEvent) 
       {
-         scoreboard.saveData();
+         Scoreboard.saveData();
          System.exit(0);
       }
    }
