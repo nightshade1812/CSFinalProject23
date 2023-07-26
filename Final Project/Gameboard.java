@@ -127,7 +127,7 @@ public class Gameboard extends JPanel
       }
       for(int i = 0; i < line; i++)
          answer = answerSelect.next();
-      System.out.println(answer);
+      //System.out.println(answer);
    }
    
    /**
