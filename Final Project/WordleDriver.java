@@ -1,5 +1,6 @@
 import javax.swing.*; //JPanel class
 import java.awt.event.*; //WindowListener class
+import java.awt.*; //Dimension class
 
 public class WordleDriver
 {
@@ -9,8 +10,11 @@ public class WordleDriver
    {
       scoreboard = new Scoreboard();
       JFrame frame = new JFrame("Wordle - Final Project (Sarah and Satik)");
-      frame.setSize(550, 655);
+      frame.setSize(900, 715);
       frame.setLocation(200, 100);
+      frame.setMinimumSize(new Dimension(890, 705));
+      frame.setMaximumSize(new Dimension(910, 725));
+      frame.setMaximizedBounds(new Rectangle(200, 0, 900, 715));
       frame.addWindowListener(new SaveAndClose());
       frame.setContentPane(new WordlePanel());
       frame.setVisible(true);
