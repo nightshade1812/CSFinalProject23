@@ -1,4 +1,4 @@
-import javax.swing.*; //JPanel class and other graphics objects
+\import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.awt.event.*; //Listener class
 import java.util.*; //Scanner class
@@ -59,28 +59,14 @@ public class Gameboard extends JPanel
    *A scanner that will be used to search a file and find whether or not a word is a valid guess.
    */
    private Scanner wordFinder;
-   
-   /**
-   *A Scanner that reads a data file to put the game back at its last known state.
-   @see Scanner
-   */
-   private Scanner dataReader;
 
    /**
    *Creates a new Gameboard object with a JLabel matrix
    */
    public Gameboard()
    {
-      try {
-         dataReader = new Scanner(new File("stats.txt"));
-      }
-      catch(FileNotFoundException e) {
-         
-      }
+      Scanner dataReader = null;
       
-      /*for(int i = 0; i < 3; i++)
-         dataReader.nextLine();*/
-   
       setLayout(new GridLayout(6, 5, 2, 2));
       
       board = new JLabel[6][5];
@@ -95,14 +81,35 @@ public class Gameboard extends JPanel
             add(board[r][c]);
          }
       
-      answer = "";
+      try {
+         dataReader = new Scanner(new File("stats.txt"));
+      }
+      catch(FileNotFoundException e) {
+         
+      }
+      
+      for(int i = 0; i < 3; i++)
+         dataReader.nextLine();
+      
+      answer = dataReader.nextLine();
+      
+      while(dataReader.hasNext() == true) {
+         String word = dataReader.nextLine();
+         if(word.equals("null"))
+            break;
+         else {
+            for(int i = 0; i < word.length(); i++) {
+               board[row][i].setText(word.charAt(i) + "");
+            }
+            checkWord(word, answer);
+         }
+      }
+      
       wordGuess = "";
-      assignAnswer();
       validKeys = new String[28];
       fillValidKeyCodeArray(validKeys);
       addKeyListener(new KeyDetector());
       setFocusable(true);
-      
    }
   
    /**
@@ -230,6 +237,14 @@ public class Gameboard extends JPanel
       if(win)
          return true;
       return false;
+   }
+   
+   /**
+   *Returns the current answer to the Wordle
+   */
+   public static String getAnswer()
+   {
+      return answer;
    }
    
    /**
