@@ -77,9 +77,15 @@ public class Scoreboard extends JPanel
          winCount = gameCount = 0;
       }
       
-      winCount = dataReader.nextInt();
-      gameCount = dataReader.nextInt();
-      winPercentage = dataReader.nextDouble();
+      try {
+         winCount = dataReader.nextInt();
+         gameCount = dataReader.nextInt();
+         winPercentage = dataReader.nextDouble();
+      }
+      catch(NoSuchElementException e) {
+         winCount = gameCount = 0;
+         winPercentage = 0.0;
+      }
       
       percent = new DecimalFormat("0.0%");
       
@@ -168,6 +174,49 @@ public class Scoreboard extends JPanel
       dataFile.close();
    }
    
+   public void clearData()
+   {
+      PrintWriter dataFile = null;
+      try {
+         dataFile = new PrintWriter(new FileWriter("stats.txt"));
+      }
+      catch(Exception e) {
+         JOptionPane.showMessageDialog(null, "The data could not be cleared.");
+      }
+      
+      JLabel[][] board = Gameboard.getBoard();
+      
+      winCount = gameCount = 0;
+      winPercentage = 0.0;
+      
+      dataFile.println(winCount);
+      dataFile.println(gameCount);
+      dataFile.println(winPercentage);
+      
+      String answer = "";
+      Scanner answerSelect = null;
+      int line = (int)(Math.random() * 2039 + 1);
+      try {
+         answerSelect = new Scanner(new File("answers.txt"));
+      }
+      catch(FileNotFoundException e) {
+         System.out.println("wrong file oopsies");
+         System.exit(0);
+      }
+      for(int i = 0; i < line; i++) {
+         answer = answerSelect.next();
+      }
+      dataFile.println(answer.toUpperCase());
+      
+      for(int i = 0; i < 6; i++)
+         dataFile.println("null");
+      dataFile.close();
+      winCountLabel.setText("Total Wins: " + winCount);
+      winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
+      gameStatusLabel.setText("    ");  
+      answerDisplay.setText("    ");
+   }
+   
    /**
    *Updates the scoreboard after a game is completed
    */
@@ -188,23 +237,23 @@ public class Scoreboard extends JPanel
    public void changeStyle(String style)
    {
       if(style.equals("Neon"))
-         {
-            winCountLabel.setBackground(new Color(255, 240, 255));
-            winPercentLabel.setBackground(new Color(255, 240, 255));
-            gameStatusLabel.setBackground(new Color(255, 240, 255));      //very light pink
-            answerDisplay.setBackground(new Color(255, 240, 255));
+      {
+         winCountLabel.setBackground(new Color(255, 240, 255));
+         winPercentLabel.setBackground(new Color(255, 240, 255));
+         gameStatusLabel.setBackground(new Color(255, 240, 255));      //very light pink
+         answerDisplay.setBackground(new Color(255, 240, 255));
             
-            answerDisplay.setForeground(new Color(12, 245, 190));  //Classic Wordle Green
-         }
-         else if(style.equals("Classic"))
-         {
-            winCountLabel.setBackground(new Color(247, 247, 247));
-            winPercentLabel.setBackground(new Color(247, 247, 247));      //very very very light grey
-            gameStatusLabel.setBackground(new Color(247, 247, 247));
-            answerDisplay.setBackground(new Color(247, 247, 247));
+         answerDisplay.setForeground(new Color(12, 245, 190));  //Classic Wordle Green
+      }
+      else if(style.equals("Classic"))
+      {
+         winCountLabel.setBackground(new Color(247, 247, 247));
+         winPercentLabel.setBackground(new Color(247, 247, 247));      //very very very light grey
+         gameStatusLabel.setBackground(new Color(247, 247, 247));
+         answerDisplay.setBackground(new Color(247, 247, 247));
             
-            answerDisplay.setForeground(new Color(106, 170, 100)); //Neon turquoisish green
-         }
+         answerDisplay.setForeground(new Color(106, 170, 100)); //Neon turquoisish green
+      }
    }
    //modifier methods
    
