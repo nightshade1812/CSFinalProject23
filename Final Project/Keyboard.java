@@ -72,7 +72,6 @@ public class Keyboard extends JPanel
          sub3.add(keyboard[k]);
       
       add(sub3, BorderLayout.SOUTH);
-   
    }
 
 /**
@@ -139,5 +138,51 @@ public class Keyboard extends JPanel
          keyboard[i].setBackground(new Color(106, 170, 100));
          keyboard[i].setForeground(Color.WHITE);
       }
+   }
+   
+   public static void changeStyle(String style)
+   {
+   
+      for(int k = 0; k < keyboard.length; k++)
+      {
+         if(style.equals("Neon"))
+         {
+            
+            if(keyboard[k].getBackground().equals(new Color(106, 170, 100)))  // Classic Wordle Green
+               keyboard[k].setBackground(new Color(12, 245, 190)); //Neon turquoisish green
+               
+            else if(keyboard[k].getBackground().equals(new Color(201, 180, 88))) // Classic Wordle Yellow
+               keyboard[k].setBackground(new Color(255, 196, 0)); //Neon orangeish yellow
+               
+            else if(keyboard[k].getBackground().equals(new Color(120, 124, 126))) //Classic Wordle cool grey
+            {
+              keyboard[k].setBackground(new Color(100, 10, 190)); //Neon blurple
+            }
+            else
+            {
+             keyboard[k].setBackground(new Color(255, 240, 255)); //Neon light pink
+            }
+         }
+         else if(style.equals("Classic"))
+         {
+            
+            if(keyboard[k].getBackground().equals(new Color(12, 245, 190)))  //Neon turquoisish green
+               keyboard[k].setBackground(new Color(106, 170, 100)); // Classic Wordle Green 
+               
+            else if(keyboard[k].getBackground().equals(new Color(255, 196, 0))) //Neon orangeish yellow
+               keyboard[k].setBackground(new Color(201, 180, 88)); // Classic Wordle Yellow
+               
+            else if(keyboard[k].getBackground().equals(new Color(100, 10, 190))) //Classic Wordle cool grey
+            {
+              keyboard[k].setBackground(new Color(120, 124, 126)); //Neon blurple
+            }
+            else
+            {
+             keyboard[k].setBackground(Color.white); //Neon light pink
+            }
+         }
+      
+      }
+   
    }
 }
