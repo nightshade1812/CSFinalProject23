@@ -67,8 +67,6 @@ public class WordlePanel extends JPanel
    */
    public WordlePanel()
    {
-      styleName = "Classic";
-      
       GridBagLayout gridbag = new GridBagLayout();
       GridBagConstraints c = new GridBagConstraints();
       
@@ -95,7 +93,6 @@ public class WordlePanel extends JPanel
       reset = new JButton("Reset");
       reset.setEnabled(false);
       reset.addActionListener(new ResetListener());
-      reset.setPreferredSize(new Dimension(100,100));
       gameboard = new Gameboard();
       scoreboard = new Scoreboard();      
           
@@ -105,20 +102,30 @@ public class WordlePanel extends JPanel
       gameContainer.add(game);
       
       c.fill = GridBagConstraints.VERTICAL;
-      c.weightx = 1.0;
+      c.weightx = 0.0;
       c.weighty = 1.0;
       c.gridx = 0;
       c.gridy = 0;
-      c.gridheight = 3;
+      c.gridheight = 5;
       add(gameContainer, c);
            
-      c.fill = GridBagConstraints.HORIZONTAL;
+      c.fill = GridBagConstraints.NONE;
       c.weightx = 0.5;
-      c.weighty = 0.0;
+      c.weighty = 0.5;
       c.gridx = 1;
-      c.gridy = 2;
+      c.gridy = 4;
       c.gridheight = 1;
+      c.anchor = GridBagConstraints.PAGE_START;
       add(reset, c);
+      
+      JLabel styleTitle = new JLabel("Choose a Style:");
+      styleTitle.setFont(new Font("Arial", Font.BOLD, 20));
+      
+      c.weightx = 1.0;
+      c.gridx = 1;
+      c.gridy = 1;
+      c.anchor = GridBagConstraints.LAST_LINE_START;
+      add(styleTitle, c);
       
       String[] list = {"Classic", "Neon"};
       style = new JComboBox(list);       // for some reason this line gives the "unckecked or unsafe operations" message
@@ -127,14 +134,16 @@ public class WordlePanel extends JPanel
       
       c.fill = GridBagConstraints.HORIZONTAL;
       c.weightx = 0.5;
-      c.weighty = 0.7;
+      c.weighty = 0.5;
       c.gridx = 1;
-      c.gridy = 1; 
+      c.gridy = 2; 
+      c.anchor = GridBagConstraints.LINE_START;
       add(style,c);
           
       c.fill = GridBagConstraints.BOTH;
       c.gridx = 1;
       c.gridy = 0;
+      c.weighty = 1;
       add(scoreboard, c);     
    } 
    
@@ -193,11 +202,11 @@ public class WordlePanel extends JPanel
    
    public static void changeStyle(String s)
    {
+      styleName = s;
       //WordlePanel.setBackground(
       //gameboard.changeStyle(s);
       keyboard.changeStyle(s);
-      //scoreboard.changeStyle(s); 
-      styleName = s;
+      scoreboard.changeStyle(s);    
    }
    //listener for the dropdown menu
    private class StyleListener implements ActionListener
