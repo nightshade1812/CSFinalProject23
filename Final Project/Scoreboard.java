@@ -14,17 +14,17 @@ public class Scoreboard extends JPanel
    /**
    *A double that stores the ratio of wins to total games played.
    */
-   private double winPercentage;
+   private static double winPercentage;
    
    /**
    *An int that stores the amount of games won.
    */
-   private int winCount;
+   private static int winCount;
    
    /**
    *An int that stores the total amount of games that have been played. 
    */
-   private int gameCount;
+   private static int gameCount;
    
    /**
    *A JLabel object that displays the percentage of games won.
@@ -82,7 +82,7 @@ public class Scoreboard extends JPanel
    *Saves the current game data in an external text file via a PrintWriter instance
    @see PrintWriter
    */
-   public void saveData()
+   public static void saveData()
    {
       PrintWriter dataFile = null;
       try {
