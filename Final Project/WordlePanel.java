@@ -206,6 +206,15 @@ public class WordlePanel extends JPanel
    {
       return reset;
    }
+
+   /**
+   *Returns the name of the current style for use in other classes
+   @return     styleName
+   */
+   public static String getStyleName()
+   {
+      return styleName;
+   }
    
    //listener for the reset button
    private class ResetListener implements ActionListener
@@ -236,8 +245,7 @@ public class WordlePanel extends JPanel
    public static void changeStyle(String s)
    {
       styleName = s;
-      //WordlePanel.setBackground(
-      //gameboard.changeStyle(s);
+      gameboard.changeStyle(s);
       keyboard.changeStyle(s);
       scoreboard.changeStyle(s);    
    }
