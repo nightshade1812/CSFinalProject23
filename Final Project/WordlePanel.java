@@ -34,6 +34,12 @@ public class WordlePanel extends JPanel
    private static JButton reset;
    
    /**
+   *A JButton that clears all data history and resets the game
+   @see JButton
+   */
+   private static JButton clear;
+   
+   /**
    *An int that determines the amount of guesses in the game
    */   
    //guessLimit starts at 6, as is traditional for Wordle
@@ -58,8 +64,8 @@ public class WordlePanel extends JPanel
    */
    public void paintComponent(Graphics g)
    {
-     g.setColor(Color.white);
-     g.fillRect(0, 0, 2000, 1800);
+      g.setColor(Color.white);
+      g.fillRect(0, 0, 2000, 1800);
    }
    
    /****************************
@@ -92,7 +98,12 @@ public class WordlePanel extends JPanel
       keyboard.setBackground(Color.BLACK);
       reset = new JButton("Reset");
       reset.setEnabled(false);
+      reset.setFocusable(false);
       reset.addActionListener(new ResetListener());
+      clear = new JButton("Clear Data");
+      clear.setEnabled(true);
+      clear.addActionListener(new ClearListener());
+      clear.setFocusable(false);
       gameboard = new Gameboard();
       scoreboard = new Scoreboard();      
           
@@ -111,9 +122,9 @@ public class WordlePanel extends JPanel
            
       c.fill = GridBagConstraints.NONE;
       c.weightx = 0.5;
-      c.weighty = 0.5;
+      c.weighty = 0.1;
       c.gridx = 1;
-      c.gridy = 4;
+      c.gridy = 3;
       c.gridheight = 1;
       c.anchor = GridBagConstraints.PAGE_START;
       add(reset, c);
@@ -137,14 +148,23 @@ public class WordlePanel extends JPanel
       c.weighty = 0.5;
       c.gridx = 1;
       c.gridy = 2; 
-      c.anchor = GridBagConstraints.LINE_START;
+      c.anchor = GridBagConstraints.FIRST_LINE_START;
       add(style,c);
           
       c.fill = GridBagConstraints.BOTH;
       c.gridx = 1;
       c.gridy = 0;
       c.weighty = 1;
-      add(scoreboard, c);     
+      add(scoreboard, c);   
+      
+      c.fill = GridBagConstraints.NONE;
+      c.weightx = 0.5;
+      c.weighty = 1.2;
+      c.gridx = 1;
+      c.gridy = 4;
+      c.gridheight = 1;
+      c.anchor = GridBagConstraints.PAGE_START;
+      add(clear, c);  
    } 
    
    /**
@@ -197,6 +217,19 @@ public class WordlePanel extends JPanel
          SoundEffect reset = new SoundEffect("buttonclick.wav");
          reset.play();
          reset();
+      }
+   }
+   
+   //listener for the clear button
+   private class ClearListener implements ActionListener
+   {
+      public void actionPerformed(ActionEvent e)
+      {
+         SoundEffect clear = new SoundEffect("buttonclick.wav");
+         clear.play();
+         scoreboard.clearData();
+         keyboard.reset();
+         gameboard.reset();
       }
    }
    
