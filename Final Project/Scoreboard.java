@@ -68,6 +68,7 @@ public class Scoreboard extends JPanel
    public Scoreboard()
    {
       setLayout(new GridLayout(3, 1));
+      setOpaque(true);
          
       try {
          dataReader = new Scanner(new File("stats.txt"));
@@ -89,11 +90,23 @@ public class Scoreboard extends JPanel
       winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage), SwingConstants.CENTER);
       gameStatusLabel = new JLabel("    ", SwingConstants.CENTER);  
       answerDisplay = new JLabel("    ", SwingConstants.CENTER);
+      
       winCountLabel.setFont(new Font("Arial", Font.BOLD, 14));
       winPercentLabel.setFont(new Font("Arial", Font.BOLD, 14));
-      gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 14));
+      gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 18));
       answerDisplay.setFont(new Font("Arial", Font.BOLD, 40));
-      answerDisplay.setForeground(Color.RED);
+      
+      winCountLabel.setOpaque(true);
+      winPercentLabel.setOpaque(true);
+      gameStatusLabel.setOpaque(true);
+      answerDisplay.setOpaque(true);
+      
+      winCountLabel.setBackground(new Color(247, 247, 247));
+      winPercentLabel.setBackground(new Color(247, 247, 247));      // very very very light grey
+      gameStatusLabel.setBackground(new Color(247, 247, 247));
+      answerDisplay.setBackground(new Color(247, 247, 247));
+      
+      answerDisplay.setForeground(new Color(106, 170, 100));  //Classic Wordle green
       
       subpanel.add(winCountLabel);
       subpanel.add(winPercentLabel);
@@ -167,7 +180,32 @@ public class Scoreboard extends JPanel
       winCountLabel.setText("Total Wins: " + winCount);
       winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
    }
+
    
+   /**
+   *Updates the colors of the scoreboard
+   */
+   public void changeStyle(String style)
+   {
+      if(style.equals("Neon"))
+         {
+            winCountLabel.setBackground(new Color(255, 240, 255));
+            winPercentLabel.setBackground(new Color(255, 240, 255));
+            gameStatusLabel.setBackground(new Color(255, 240, 255));      //very light pink
+            answerDisplay.setBackground(new Color(255, 240, 255));
+            
+            answerDisplay.setForeground(new Color(12, 245, 190));  //Classic Wordle Green
+         }
+         else if(style.equals("Classic"))
+         {
+            winCountLabel.setBackground(new Color(247, 247, 247));
+            winPercentLabel.setBackground(new Color(247, 247, 247));      //very very very light grey
+            gameStatusLabel.setBackground(new Color(247, 247, 247));
+            answerDisplay.setBackground(new Color(247, 247, 247));
+            
+            answerDisplay.setForeground(new Color(106, 170, 100)); //Neon turquoisish green
+         }
+   }
    //modifier methods
    
    /**
