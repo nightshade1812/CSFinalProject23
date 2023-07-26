@@ -10,7 +10,7 @@ public class WordleDriver
    {
       scoreboard = new Scoreboard();
       JFrame frame = new JFrame("Wordle - Final Project (Sarah and Satik)");
-      frame.setSize(900, 650);
+      frame.setSize(930, 650);
       frame.setLocation(200, 100);
       frame.setMinimumSize(new Dimension(890, 640));
       frame.setMaximumSize(new Dimension(910, 660));
