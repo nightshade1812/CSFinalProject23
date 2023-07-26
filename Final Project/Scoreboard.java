@@ -45,20 +45,34 @@ public class Scoreboard extends JPanel
    private DecimalFormat percent;
    
    /**
+   *A Scanner that reads a data file to put the game back at its last known state.
+   @see Scanner
+   */
+   private Scanner dataReader;
+   
+   /**
    *Creates a Scoreboard instance containing 2 JLabel objects
    */
    public Scoreboard()
    {
       setLayout(new FlowLayout()); //might change to another layout later on
       
-      winPercentage = 0.0;
-      winCount = gameCount = 0;
+      try {
+         dataReader = new Scanner(new File("stats.txt"));
+      }
+      catch(FileNotFoundException e) {
+         winCount = gameCount = 0;
+      }
+      
+      /*winCount = dataReader.nextInt();
+      gameCount = dataReader.nextInt();
+      winPercentage = dataReader.nextDouble();*/
       
       percent = new DecimalFormat("0.0%");
       
       
       winCountLabel = new JLabel("Total Wins: " + winCount);
-      winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(100 * winPercentage));
+      winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage));
       
       add(winCountLabel);
       add(winPercentLabel);
@@ -71,11 +85,10 @@ public class Scoreboard extends JPanel
    public void saveData()
    {
       PrintWriter dataFile = null;
-      try{
+      try {
          dataFile = new PrintWriter(new FileWriter("stats.txt"));
       }
-      catch(Exception e)
-      {
+      catch(Exception e) {
          JOptionPane.showMessageDialog(null, "The game could not be saved.");
       }
       
@@ -84,16 +97,17 @@ public class Scoreboard extends JPanel
       dataFile.println(winCount);
       dataFile.println(gameCount);
       dataFile.println(winPercentage);
+      
       for(int r = 0; r < board.length; r++) {
          for(int c = 0; c < board[0].length; c++) {
-            if(board[r][c].getText().contains(" ")) {
-               dataFile.println("null");
+            if(board[r][c].getText().equals("     ")) {
+               dataFile.print("null");
                break;
             }
             else
-               dataFile.print(board[r][c].getText());
+               dataFile.print(board[r][c].getText().replace(" ", ""));
          }
-         dataFile.print("\n");
+         dataFile.println();
       }
       dataFile.close();
    }
@@ -108,7 +122,7 @@ public class Scoreboard extends JPanel
          winCount++;
       winPercentage = (double)(winCount)/(double)(gameCount);
       winCountLabel.setText("Total Wins: " + winCount);
-      winPercentLabel.setText("Percent of Games Won: " + percent.format(100 * winPercentage));
+      winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
    }
    
    //modifier methods
