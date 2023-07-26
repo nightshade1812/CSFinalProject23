@@ -194,9 +194,9 @@ public class WordlePanel extends JPanel
    public static void changeStyle(String s)
    {
       //WordlePanel.setBackground(
-      //gameboard.changeStyle(styleName);
-      keyboard.changeStyle(styleName);
-      //scoreboard.changeStyle(styleName); 
+      //gameboard.changeStyle(s);
+      keyboard.changeStyle(s);
+      //scoreboard.changeStyle(s); 
       styleName = s;
    }
    //listener for the dropdown menu
