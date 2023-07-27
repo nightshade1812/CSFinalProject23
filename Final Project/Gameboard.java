@@ -188,7 +188,7 @@ public class Gameboard extends JPanel
          return false;
       }
       
-      if(Searcher.linear(array, input.toLowerCase()))
+      if(Searcher.linear(array, input.toLowerCase()) == true)
          return true;
       return false;
    }
