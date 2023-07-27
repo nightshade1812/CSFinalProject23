@@ -6,37 +6,39 @@ import java.io.*; //File class
 
 /**
 *The Gameboard class is the main game container. The main player input happens here via the keyboard. The word is chosen and checked 
-* against the player's input via several methods. 
+* against the player's input via several methods, and the result is displayed in a JLabel matrix. 
 */
 public class Gameboard extends JPanel
 {
    /**
-   *A JLabel matrix within a Gameboard instance, will display a word on each row
+   *A <code>JLabel</code> matrix within a Gameboard instance, will display a word on each row
+   @see JLabel
+   @see java.util.Arrays
    */
    private static JLabel[][] board;
    
    /**
-   *A string that stores the word to be guessed
+   *A <code>String</code> that stores the word to be guessed
    */
    private static String answer;
    
    /**
-   *A string that stores the current word being guessed
+   *A <code>String</code> that stores the current word being guessed
    */
    private static String wordGuess;
    
    /**
-   *An int that stores the amount of guesses used
+   *An <code>int</code> that stores the amount of guesses used
    */
    private static int guess;
    
    /**
-   *An int that stores the row the Wordle is typing in
+   *An <code>int</code> that stores the row the user is currently typing in
    */
    private static int row;
    
    /**
-   *An int that stores which space is the one to be typed in on the next key input
+   *An <code>int</code> that stores which space is the one to be typed in on the next key input
    */
    private static int space;
    
@@ -49,20 +51,22 @@ public class Gameboard extends JPanel
    *A boolean that stores whether or not the game has ended
    */
    private static boolean gameEnd;
-   
-   
+ 
    /**
-   *A string array that stores all valid key names
+   *A <code>String</code> array that stores all valid key names
+   @see java.util.Arrays
    */
    private String[] validKeys;
    
    /**
-   *A scanner that will be used to search a file and find a random word to be the answer.
+   *A <code>Scanner</code> that will be used to search a file and find a random word to be the answer.
+   @see java.util.Scanner
    */
    private Scanner answerSelect;
    
    /**
-   *A scanner that will be used to search a file and find whether or not a word is a valid guess.
+   *A <code>Scanner</code> that will be used to search a file and find whether or not a word is a valid guess.
+   @see java.util.Scanner
    */
    private Scanner wordFinder;
    
@@ -72,7 +76,8 @@ public class Gameboard extends JPanel
    private String style = WordlePanel.getStyle();
    
    /**
-   *Creates a new Gameboard object with a JLabel matrix
+   *Creates a new Gameboard object with a <code>JLabel</code> matrix and a KeyListener. The matrix is filled with 
+   *blank JLabels or previous game data, if there is any.
    */
    public Gameboard()
    {
@@ -136,7 +141,7 @@ public class Gameboard extends JPanel
    }
   
    /**
-   *Randomly selects a 5 letter word from answers.txt and assigns it to answer
+   *Randomly selects a 5 letter word from <code>answers.txt</code> and assigns it to <code>answer</code>
    */ 
    public void assignAnswer()
    {
@@ -154,7 +159,9 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Checks if the word that the user inputs is a valid word. Also checks for special cases (incorrect word length, special characters, etc.). Returns a boolean value
+   *Checks if the word that the user inputs is a valid word. Also checks for special cases 
+   *(incorrect word length, special characters, etc.). Returns a boolean value
+   @param      input - The word that the user inputs via keyboard
    @return     boolean
    */
    public boolean checkWordValid(String input)
@@ -185,7 +192,11 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Checks if the word that the user inputs is equal to answer and will change the colors of Gameboard squares or display a winner message accordingly
+   *Checks if the word that the user inputs is equal to answer and will change the colors of 
+   *<code>Gameboard</code> squares or display a winner message accordingly
+   @param   input - The word that the user inputs via keyboard
+   @param   answerin - The current word to be guessed
+   @param   style - The current style of the game
    */
    public void checkWord(String input, String answerin, String style)
    {
@@ -330,7 +341,8 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Updates the JLabel matrix to display the letter that the player has typed
+   *Updates the <code>JLabel</code> matrix to display the letter that the player has typed
+   @param   c - The character on the keyboar that has been typed
    */
    public void inputKeyChar(char c)
    {
@@ -338,7 +350,7 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Sets the entire JLabel matrix to blank, resets guess and answer
+   *Sets the entire JLabel matrix to blank, resets <code>guess</code> and <code>answer</code>
    */
    public void reset()
    {
@@ -358,7 +370,8 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *
+   *Updates the style of the Gameboard according to the static String <code>style</code> in WordlePanel
+   @param   stylein - The name of a game style 
    */
    public void changeStyle(String stylein)
    {
@@ -410,7 +423,8 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Displays a message depending on whether the player has won or lost
+   *Returns a boolean depending on whether the player has won or lost.
+   @return  boolean
    */
    public static boolean winner()
    {
@@ -422,6 +436,7 @@ public class Gameboard extends JPanel
    
    /**
    *Returns the current status of the game
+   @return   boolean
    */
    public static boolean getGameEnd()
    {
@@ -429,7 +444,8 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Returns the current answer to the Wordle
+   *Returns the current game's answer.
+   @return  answer
    */
    public static String getAnswer()
    {
@@ -437,7 +453,9 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Manually fills the array of valid key codes
+   *Manually fills the array of valid key codes in QWERTY keyboard order
+   @param   arr - An array of single-character strings
+   @see  java.util.Arrays
    */
    public void fillValidKeyCodeArray(String[] arr)
    {
@@ -472,7 +490,7 @@ public class Gameboard extends JPanel
    }
    
    /**
-   *Returns the current board matrix
+   *Returns the current state of the JLabel matrix <code>board</code>
    @return     JLabel[][]
    */
    public static JLabel[][] getBoard()
@@ -480,7 +498,7 @@ public class Gameboard extends JPanel
       return board;
    }
    
-   /**
+  /**
    *Returns the current guess number
    @return     int
    */
@@ -490,6 +508,10 @@ public class Gameboard extends JPanel
    }
    
    //the key listener that we will use to update the board as keys are typed
+   /**
+   *Updates the text of <code>board</code> accoding to what key has been typed, utilizing the KeyAdapter interface
+   @see KeyAdapter
+   */
    private class KeyDetector extends KeyAdapter
    {
       public void keyPressed(KeyEvent e)
