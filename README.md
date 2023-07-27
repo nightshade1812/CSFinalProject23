@@ -1,3 +1,3 @@
-# CSFinalProject23
+# Wordle
 
-This is our CS final project, Wordle. It runs by way of WordleDriver. All files present are required for the program to run.
+run it through WordleDriver and enjoy playing infinite Wordle!
