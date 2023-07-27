@@ -70,21 +70,6 @@ public class Gameboard extends JPanel
    *A string that stores the current style
    */
    private String style = WordlePanel.getStyle();
-
-   /****************************
-   *Fills the panel with a color depending on the theme
-   */
-   public void paintComponent(Graphics g)
-   {
-      if(style.equals("Neon")) {
-         g.setColor(Color.BLACK);
-         g.fillRect(0, 0, 2000, 1800);
-      }
-      else if(style.equals("Classic")) {
-         g.setColor(new Color(238, 238, 238));
-         g.fillRect(0, 0, 2000, 1800);
-      }
-   }
    
    /**
    *Creates a new Gameboard object with a JLabel matrix
@@ -375,9 +360,9 @@ public class Gameboard extends JPanel
    public void changeStyle(String stylein)
    {
       style = stylein;
-      repaint();
       if(style.equals("Neon"))
       {
+         setBackground(Color.BLACK);
          for(int r = 0; r < board.length; r++)
             for(int c = 0; c < board[0].length; c++)
             {
@@ -399,6 +384,7 @@ public class Gameboard extends JPanel
       }
       else if(style.equals("Classic"))
       {
+         setBackground(new Color(238, 238, 238));
          for(int r = 0; r < board.length; r++)
             for(int c = 0; c < board[0].length; c++)
             {
@@ -478,8 +464,8 @@ public class Gameboard extends JPanel
       arr[23] = "B";
       arr[24] = "N";
       arr[25] = "M";
-      arr[26] = "⏎";
-      arr[27] = "⌫";
+      arr[26] = "ENTER";
+      arr[27] = "BACKSPACE";
    }
    
    /**
@@ -510,14 +496,14 @@ public class Gameboard extends JPanel
          keyName = keyName.toUpperCase();
          //System.out.println(keyName);
          
-         if((!keyName.equals("⌫") && !keyName.equals("⏎")) && Searcher.linear(validKeys, keyName)) {
+         if((!keyName.equals("BACKSPACE") && !keyName.equals("ENTER")) && Searcher.linear(validKeys, keyName)) {
             if(space == 5)
                return;
             board[row][space].setText(" " + keyName + " ");
             space++;
             wordGuess = wordGuess + keyName;
          }
-         else if(keyName.equals("⌫")) {
+         else if(keyName.equals("BACKSPACE")) {
             if(space == 0) {
                space = 1;
                wordGuess = wordGuess + " ";
@@ -526,7 +512,7 @@ public class Gameboard extends JPanel
             space--;
             wordGuess = wordGuess.substring(0, wordGuess.length() - 1);
          }
-         else if(keyName.equals("⏎"))
+         else if(keyName.equals("ENTER"))
             checkWord(wordGuess, answer, WordlePanel.getStyleName());
          else
             return;
