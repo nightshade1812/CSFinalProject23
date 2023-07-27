@@ -63,7 +63,7 @@ public class Keyboard extends JPanel
          sub1.setBackground(new Color(238, 238, 238));
       }
       else if(style.equals("Neon")) {
-         sub1.setBackground(Color.black);
+         sub1.setBackground(Color.BLACK);
       }
       sub1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
          
@@ -77,7 +77,7 @@ public class Keyboard extends JPanel
          sub2.setBackground(new Color(238, 238, 238));
       }
       else if(style.equals("Neon")) {
-         sub2.setBackground(Color.black);
+         sub2.setBackground(Color.BLACK);
       }
       sub2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 4));
      
@@ -96,7 +96,7 @@ public class Keyboard extends JPanel
          sub3.setBackground(new Color(238, 238, 238));
       }
       else if(style.equals("Neon")) {
-         sub3.setBackground(Color.black);
+         sub3.setBackground(Color.BLACK);
       }
       sub3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
       JLabel longBlank = new JLabel("                   ");
@@ -211,10 +211,10 @@ public class Keyboard extends JPanel
                keyboard[k].setBackground(new Color(255, 240, 255)); //Neon light pink
             }
          }
+         sub1.setBackground(new Color(50, 50, 50));
+         sub2.setBackground(new Color(50, 50, 50));
+         sub3.setBackground(new Color(50, 50, 50));
          repaint();
-         sub1.setBackground(Color.black);
-         sub2.setBackground(Color.black);
-         sub3.setBackground(Color.black);
       }
       else if(style.equals("Classic"))
       {
@@ -235,10 +235,10 @@ public class Keyboard extends JPanel
                keyboard[k].setBackground(Color.white); 
             }
          }
+         repaint();
+         sub1.setBackground(new Color(238, 238, 238));
+         sub2.setBackground(new Color(238, 238, 238));
+         sub3.setBackground(new Color(238, 238, 238));
       }
-      repaint();
-      sub1.setBackground(new Color(238, 238, 238));
-      sub2.setBackground(new Color(238, 238, 238));
-      sub3.setBackground(new Color(238, 238, 238));
    }
 }
