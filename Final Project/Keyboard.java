@@ -24,21 +24,6 @@ public class Keyboard extends JPanel
    */
    private JPanel sub1, sub2, sub3;
    
-  /****************************
-   *Fills the panel with white
-   */
-   public void paintComponent(Graphics g)
-   {
-      if(style.equals("Classic")) {
-         g.setColor(new Color(238, 238, 238));
-         g.fillRect(0, 0, 600, 600);
-      }
-      else if(style.equals("Neon")) {
-         g.setColor(Color.BLACK);
-         g.fillRect(0, 0, 600, 600);
-      }
-   }
-   
 /**
 *Creates a Keyboard instance with a JLabel array
 */
@@ -219,7 +204,7 @@ public class Keyboard extends JPanel
          sub1.setBackground(new Color(50, 50, 50));
          sub2.setBackground(new Color(50, 50, 50));
          sub3.setBackground(new Color(50, 50, 50));
-         repaint();
+         setBackground(Color.BLACK);
       }
       else if(style.equals("Classic"))
       {
@@ -240,7 +225,7 @@ public class Keyboard extends JPanel
                keyboard[k].setBackground(Color.white); 
             }
          }
-         repaint();
+         setBackground(new Color(238, 238, 238));
          sub1.setBackground(new Color(238, 238, 238));
          sub2.setBackground(new Color(238, 238, 238));
          sub3.setBackground(new Color(238, 238, 238));
