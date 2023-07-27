@@ -5,74 +5,73 @@ import java.util.*; //Scanner class
 import java.io.*; //File class
 
 /*******
-*The WordlePanel class serves as the organizing panel for the game, containing several subpanels and menus/player options. 
+*The <code>WordlePanel</code> class serves as the organizing panel for the game, containing several subpanels, menus, and player options. 
 */
 
 public class WordlePanel extends JPanel
 {
    /**
-   *The WordlePanel' Gameboard
+   *The <code>WordlePanel</code>'s <code>Gameboard</code>.
    @see Gameboard
    */
    private static Gameboard gameboard;
    
    /**
-   *The WordlePanel' Scoreboard
+   *The <code>WordlePanel</code>'s <code>Scoreboard</code>.
    @see Scoreboard
    */
    private static Scoreboard scoreboard;
    
    /**
-   *The WordlePanel' Keyboard
+   *The <code>WordlePanel</code>'s <code>Keyboard</code>.
    @see Keyboard
    */
    private static Keyboard keyboard;
    
    /**
-   *A JButton that resets the WordlePanel and its subpanels
+   *A <code>JButton</code> that resets the <code>WordlePanel</code> and its subpanels.
    @see JButton
    */
    private static JButton reset;
    
    /**
-   *A JButton that clears all data history and resets the game
+   *A <code>JButton</code> that clears all data history and resets the game.
    @see JButton
    */
    private static JButton clear;
    
    /**
-   *An int that determines the amount of guesses in the game
-   */   
-   //guessLimit starts at 6, as is traditional for Wordle
-   private int guessLimit = 6;
-   
-   /**
-   * ///////////////////INSERT COMMENT HERE /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   *A <code>JComboBox</code> used in the WordlePanel constructor and in the StyleListener class, serves 
+   *as a dropdown menu for the game style.
+   @see  JComboBox
    */
    private static JComboBox style;
    
    /**
-   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   *The title of the game
+   @see   JLabel
    */
    private static JLabel title;
    
    /**
-   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   *A header for the JComboBox <code>style<code>
+   @see   JLabel
    */
    private static JLabel styleTitle;
    
    /**
-   * /////////////////INSERT COMMENT HERE//////////////////////////////////////////////////////////////////////////////////////////////////////
+   *A String used to commmunicate the game style between WordlePanel, Gameboard, Keyboard, and Scoreboard
    */
    private static String styleName;
    
    /**
-   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   *2 JPanels used for the game layout
+   @see   JPanel
    */
    private static JPanel game, gameContainer;
    
    /****************************
-   *Fills the panel with a color depending on the theme
+   *Fills the panel's background with a color depending on the theme
    */
    public void paintComponent(Graphics g)
    {
@@ -85,14 +84,28 @@ public class WordlePanel extends JPanel
          g.fillRect(0, 0, 2000, 1800);
       }
    }
-   
+
+   /**
+   *Returns the name of the current style for use in other classes.
+   @return     style
+   */
    public static String getStyle()
    {
       return styleName;
    }
    
    /****************************
-   *Creates a WordlePanel instance containing a Gameboard object, a Scoreboard object, a KeyBoard object, and a JButton object
+   *Creates a WordlePanel instance containing a Gameboard object, a Scoreboard object, a KeyBoard object, 
+   *several JLabels and JButtons, and a JComboBox. The WorldePanel utilizes a GridBagLayout to organize all of its 
+   *components, with the main game on the left and the options on the right. 
+   @see  Gameboard
+   @see  Scoreboard
+   @see  Keyboard
+   @see  JLabel
+   @see  JButton
+   @see  JComboBox
+   @see  GridBagLayout
+   @see  GridBagConstraints
    */
    public WordlePanel()
    {
@@ -237,33 +250,17 @@ public class WordlePanel extends JPanel
    } 
    
    /**
-   *Resets the Gameboard and the Keyboard by calling their reset methods
+   *Activates once a game is completed (win or loss). Resets the Gameboard and the Keyboard by calling their reset methods, 
+   *while also updating the Scoreboard. After resetting, the button disables untill another game is completed. 
    @see Gameboard.reset()
    @see Keyboard.reset()
+   @see Scoreboard.update()
    */
    public void reset()
    {
       scoreboard.update();
       gameboard.reset();
       keyboard.reset(styleName);
-   }
-   
-   /**
-   *Sets the amount of guesses per game to the input x
-   @param x    assigns x to guessLimit
-   */
-   public void setGuessLimit(int x)
-   {
-      guessLimit = x;
-   }
-   
-   /**
-   *Returns the total amount of guesses in the current game
-   @return     guessLimit
-   */
-   public int getGuessLimit()
-   {
-      return guessLimit;
    }
    
    /**
@@ -284,7 +281,13 @@ public class WordlePanel extends JPanel
       return styleName;
    }
    
-   //listener for the reset button
+   /**
+   *Checks whether or not the reset button has been clicked. 
+   *Once clicked, it will play the reset sound effect and reset the WordlePanel and its components.
+   @see  ActionListener
+   @see  SoundEffect
+   @see  javax.sound.sampled.AudioSystem
+   */
    private class ResetListener implements ActionListener
    {
       public void actionPerformed(ActionEvent e)
@@ -297,7 +300,13 @@ public class WordlePanel extends JPanel
       }
    }
    
-   //listener for the clear button
+   /**
+   *Checks whether or not the clear button has been clicked.
+   *Once clicked, it will clear all saved game data and restart the game, playing the clear sound effect. 
+   @see  ActionListener
+   @see  SoundEffect
+   @see  javax.sound.sampled.AudioSystem
+   */
    private class ClearListener implements ActionListener
    {
       public void actionPerformed(ActionEvent e)
@@ -309,7 +318,11 @@ public class WordlePanel extends JPanel
          gameboard.reset();
       }
    }
-   
+
+   /**
+   *Updates the current game style based on <code>style</code>, a JComboBox. 
+   @param   s - The name of the game style as a <code>String</code>.
+   */ 
    public void changeStyle(String s)
    {
       styleName = s;
@@ -331,7 +344,12 @@ public class WordlePanel extends JPanel
       scoreboard.changeStyle(s);    
    }
    
-   //listener for the dropdown menu
+   /**
+   *Checks what has been selected in the JComboBox 
+   *<code>style</code>, changing the style of the game accodingly
+   @see  ActionListener
+   @see  changeStyle(String s)
+   */
    private class StyleListener implements ActionListener
    {
       public void actionPerformed(ActionEvent e)
