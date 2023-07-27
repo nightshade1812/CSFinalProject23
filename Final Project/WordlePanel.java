@@ -1,3 +1,5 @@
+//Created by Satik Karki and Sarah Trainer, final version completed 7/27/2023
+
 import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.awt.event.*; //Listener class
