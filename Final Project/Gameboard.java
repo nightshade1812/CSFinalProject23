@@ -77,7 +77,10 @@ public class Gameboard extends JPanel
    public Gameboard()
    {
       Scanner dataReader = null;
-      
+      if(style.equals("Classic"))
+         setBackground(new Color(238, 238, 238));
+      else if(style.equals("Neon"))
+         setBackground(Color.BLACK);
       setLayout(new GridLayout(6, 5, 2, 2));
       
       board = new JLabel[6][5];
