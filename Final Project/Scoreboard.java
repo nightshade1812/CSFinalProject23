@@ -79,21 +79,6 @@ public class Scoreboard extends JPanel
    */
    private String style;
    
-   /****************************
-   *Fills the panel with a color depending on the theme
-   */
-   public void paintComponent(Graphics g)
-   {
-      if(style.equals("Neon")) {
-         g.setColor(Color.BLACK);
-         g.fillRect(0, 0, 2000, 1800);
-      }
-      else if(style.equals("Classic")) {
-         g.setColor(new Color(247, 247, 247));
-         g.fillRect(0, 0, 2000, 1800);
-      }
-   }
-   
    /**
    *Creates a Scoreboard instance containing 2 JLabel objects
    */
@@ -314,9 +299,9 @@ public class Scoreboard extends JPanel
    */
    public void changeStyle(String style)
    {
-      repaint();
       if(style.equals("Neon"))
       {
+         setBackground(new Color(255, 240, 255));
          gameCountLabel.setBackground(new Color(255, 240, 255));
          winCountLabel.setBackground(new Color(255, 240, 255));
          winPercentLabel.setBackground(new Color(255, 240, 255));
@@ -328,6 +313,7 @@ public class Scoreboard extends JPanel
       }
       else if(style.equals("Classic"))
       {
+         setBackground(new Color(247, 247, 247));
          gameCountLabel.setBackground(new Color(247, 247, 247));
          winCountLabel.setBackground(new Color(247, 247, 247));
          winPercentLabel.setBackground(new Color(247, 247, 247));      //very very very light grey
