@@ -54,7 +54,7 @@ public class WordlePanel extends JPanel
    private static JLabel title;
    
    /**
-   *A header for the JComboBox <code>style<code>
+   *A header for the JComboBox <code>style</code>
    @see   JLabel
    */
    private static JLabel styleTitle;
