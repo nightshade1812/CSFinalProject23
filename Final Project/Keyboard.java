@@ -189,7 +189,7 @@ public class Keyboard extends JPanel
 
    /**
    *Changes the visual colors of a Keyboard based on what has been selected in WordlePanel's <code>style</code> JComboBox
-   @param   style - The name of a game style
+   @param   stylein - The name of a game style
    */
    public void changeStyle(String stylein)
    {
