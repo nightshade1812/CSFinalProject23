@@ -39,6 +39,12 @@ public class Scoreboard extends JPanel
    private JLabel winCountLabel;
    
    /**
+   *A JLabel object that displays the total amount of games played.
+   @see JLabel
+   */
+   private JLabel gameCountLabel;
+   
+   /**
    *A JLabel object that displays various game statuses (invalid word, winner/loser, etc.).
    @see JLabel
    */
@@ -63,6 +69,12 @@ public class Scoreboard extends JPanel
    private Scanner dataReader;
    
    /**
+   *A panel that helps organize the statistics.
+   @see JPanel
+   */
+   private JPanel subpanel;
+   
+   /**
    *A string that stores the current style
    */
    private String style = WordlePanel.getStyle();
@@ -77,7 +89,7 @@ public class Scoreboard extends JPanel
          g.fillRect(0, 0, 2000, 1800);
       }
       else if(style.equals("Classic")) {
-         g.setColor(new Color(238, 238, 238));
+         g.setColor(new Color(247, 247, 247));
          g.fillRect(0, 0, 2000, 1800);
       }
    }
@@ -109,24 +121,30 @@ public class Scoreboard extends JPanel
       
       percent = new DecimalFormat("0.0%");
       
-      JPanel subpanel = new JPanel();
-      subpanel.setLayout(new GridLayout(2, 1));
+      subpanel = new JPanel();
+      subpanel.setLayout(new GridLayout(3, 1));
+      subpanel.setOpaque(true);
+      subpanel.setBackground(new Color(247, 247, 247));
       
       winCountLabel = new JLabel("Total Wins: " + winCount, SwingConstants.CENTER);
+      gameCountLabel = new JLabel("Games Played: " + gameCount, SwingConstants.CENTER);
       winPercentLabel = new JLabel("Percent of Games Won: " + percent.format(winPercentage), SwingConstants.CENTER);
       gameStatusLabel = new JLabel("    ", SwingConstants.CENTER);  
       answerDisplay = new JLabel("    ", SwingConstants.CENTER);
       
+      gameCountLabel.setFont(new Font("Arial", Font.BOLD, 14));
       winCountLabel.setFont(new Font("Arial", Font.BOLD, 14));
       winPercentLabel.setFont(new Font("Arial", Font.BOLD, 14));
       gameStatusLabel.setFont(new Font("Arial", Font.BOLD, 18));
       answerDisplay.setFont(new Font("Arial", Font.BOLD, 40));
       
+      gameCountLabel.setOpaque(true);
       winCountLabel.setOpaque(true);
       winPercentLabel.setOpaque(true);
       gameStatusLabel.setOpaque(true);
       answerDisplay.setOpaque(true);
       
+      gameCountLabel.setBackground(new Color(247, 247, 247));
       winCountLabel.setBackground(new Color(247, 247, 247));
       winPercentLabel.setBackground(new Color(247, 247, 247));      // very very very light grey
       gameStatusLabel.setBackground(new Color(247, 247, 247));
@@ -134,6 +152,7 @@ public class Scoreboard extends JPanel
       
       answerDisplay.setForeground(new Color(106, 170, 100));  //Classic Wordle green
       
+      subpanel.add(gameCountLabel);
       subpanel.add(winCountLabel);
       subpanel.add(winPercentLabel);
       add(subpanel);
@@ -232,6 +251,7 @@ public class Scoreboard extends JPanel
          dataFile.println("null");
       dataFile.close();
       winCountLabel.setText("Total Wins: " + winCount);
+      gameCountLabel.setText("Games Played: " + gameCount);
       winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
       gameStatusLabel.setText("    ");  
       answerDisplay.setText("    ");
@@ -242,12 +262,21 @@ public class Scoreboard extends JPanel
    */
    public void update()
    {
-      gameCount++;
-      if(Gameboard.winner())
-         winCount++;
-      winPercentage = (double)(winCount)/(double)(gameCount);
-      winCountLabel.setText("Total Wins: " + winCount);
-      winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
+      if(Gameboard.getGameEnd())
+      {
+         gameCount++;
+         if(Gameboard.winner())
+            winCount++;
+         winPercentage = (double)(winCount)/(double)(gameCount);
+         winCountLabel.setText("Total Wins: " + winCount);
+         gameCountLabel.setText("Games Played: " + gameCount);
+         winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
+      }
+      else {
+         winCountLabel.setText("Total Wins: " + winCount);
+         gameCountLabel.setText("Games Played: " + gameCount);
+         winPercentLabel.setText("Percent of Games Won: " + percent.format(winPercentage));
+      }
    }
 
    
@@ -259,19 +288,23 @@ public class Scoreboard extends JPanel
       repaint();
       if(style.equals("Neon"))
       {
+         gameCountLabel.setBackground(new Color(255, 240, 255));
          winCountLabel.setBackground(new Color(255, 240, 255));
          winPercentLabel.setBackground(new Color(255, 240, 255));
          gameStatusLabel.setBackground(new Color(255, 240, 255));      //very light pink
          answerDisplay.setBackground(new Color(255, 240, 255));
+         subpanel.setBackground(new Color(255, 240, 255));
             
          answerDisplay.setForeground(new Color(12, 245, 190));  //Classic Wordle Green
       }
       else if(style.equals("Classic"))
       {
+         gameCountLabel.setBackground(new Color(247, 247, 247));
          winCountLabel.setBackground(new Color(247, 247, 247));
          winPercentLabel.setBackground(new Color(247, 247, 247));      //very very very light grey
          gameStatusLabel.setBackground(new Color(247, 247, 247));
          answerDisplay.setBackground(new Color(247, 247, 247));
+         subpanel.setBackground(new Color(247, 247, 247));
             
          answerDisplay.setForeground(new Color(106, 170, 100)); //Neon turquoisish green
       }
