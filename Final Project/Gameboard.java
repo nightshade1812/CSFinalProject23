@@ -103,7 +103,10 @@ public class Gameboard extends JPanel
             board[r][c] = new JLabel("     ", SwingConstants.CENTER);
             board[r][c].setFont(new Font("Arial", Font.BOLD, 50));
             board[r][c].setOpaque(true);
-            board[r][c].setBackground(Color.WHITE);
+            if(style.equals("Classic"))
+               board[r][c].setBackground(Color.WHITE);
+            else if(style.equals("Neon"))
+               board[r][c].setBackground(new Color(255, 240, 255));
             add(board[r][c]);
          }
       
@@ -119,7 +122,7 @@ public class Gameboard extends JPanel
       
       answer = dataReader.nextLine();
       
-      while(dataReader.hasNext() == true) {
+      for(int r = 0; r < 6; r++) {
          String word = dataReader.nextLine();
          if(word.equals("null"))
             break;
@@ -135,6 +138,7 @@ public class Gameboard extends JPanel
                }
          }
       }
+      dataReader.close();
       System.out.println(answer);
       wordGuess = "";
       validKeys = new String[28];
