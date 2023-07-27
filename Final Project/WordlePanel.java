@@ -1,6 +1,8 @@
 import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.awt.event.*; //Listener class
+import java.util.*; //Scanner class
+import java.io.*; //File class
 
 /*******
 *The WordlePanel class serves as the organizing panel for the game, containing several subpanels and menus/player options. 
@@ -94,8 +96,25 @@ public class WordlePanel extends JPanel
    */
    public WordlePanel()
    {
-      styleName = "Classic";
-   
+      Scanner readStyle = null;
+      
+      try {
+         readStyle = new Scanner(new File("stats.txt"));
+      }
+      catch(FileNotFoundException e) {
+         styleName = "Classic";
+      }
+      for(int i = 0; i < 10; i++)
+         readStyle.nextLine();
+      styleName = readStyle.nextLine();
+      if(styleName.equals("Classic")) {
+         setBackground(Color.WHITE);
+      }
+      else if(styleName.equals("Neon")) {
+         setBackground(Color.BLACK);
+      }
+
+      
       GridBagLayout gridbag = new GridBagLayout();
       GridBagConstraints c = new GridBagConstraints();
       
@@ -106,16 +125,32 @@ public class WordlePanel extends JPanel
       gameContainer = new JPanel();
       gameContainer.setLayout(new FlowLayout());
       gameContainer.setOpaque(true);
-      gameContainer.setBackground(Color.white);
+      if(styleName.equals("Classic")) {
+         gameContainer.setBackground(Color.WHITE);
+      }
+      else if(styleName.equals("Neon")) {
+         gameContainer.setBackground(Color.BLACK);
+      }
       
       title = new JLabel("     Wordle     ");
       title.setFont(new Font("Arial", Font.BOLD, 40));
+      if(styleName.equals("Classic")) {
+         title.setForeground(Color.BLACK);
+      }
+      else if(styleName.equals("Neon")) {
+         title.setForeground(Color.WHITE);
+      }
       gameContainer.add(title);
    
       game = new JPanel();
       game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
       game.setOpaque(true);
-      game.setBackground(new Color(238, 238, 238));
+      if(styleName.equals("Classic")) {
+         game.setBackground(new Color(238, 238, 238));
+      }
+      else if(styleName.equals("Neon")) {
+         game.setBackground(Color.BLACK);
+      }
          
       keyboard = new Keyboard();
       keyboard.setPreferredSize(new Dimension(500,180));
@@ -163,7 +198,12 @@ public class WordlePanel extends JPanel
       c.anchor = GridBagConstraints.LAST_LINE_START;
       add(styleTitle, c);
       
-      String[] list = {"Classic", "Neon"};
+      String list2 = "";
+      if(styleName.equals("Neon"))
+         list2 = "Classic";
+      else if(styleName.equals("Classic"))
+         list2 = "Neon";
+      String[] list = {styleName, list2};
       style = new JComboBox(list);       // for some reason this line gives the "unchecked or unsafe operations" message
       style.setFocusable(false);
       style.addActionListener(new StyleListener());
