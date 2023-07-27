@@ -1,3 +1,5 @@
+//Created by Sarah Trainer and Satik Karki, final version completed 7/27/2023
+
 import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.util.*; //PrintWriter class
@@ -80,7 +82,7 @@ public class Scoreboard extends JPanel
    private String style;
    
    /**
-   *Creates a Scoreboard instance containing 2 JLabel objects
+   *Creates a Scoreboard instance containing several JLabel objects
    */
    public Scoreboard()
    {
@@ -173,7 +175,7 @@ public class Scoreboard extends JPanel
    }
    
    /**
-   *Saves the current game data in an external text file via a PrintWriter instance
+   *Saves the current game data in an external text file via a <code>PrintWriter</code> instance
    @see PrintWriter
    */
    public static void saveData()
@@ -225,7 +227,10 @@ public class Scoreboard extends JPanel
       dataFile.println(WordlePanel.getStyleName());
       dataFile.close();
    }
-   
+
+   /**
+   *Clears all saved game data using a <code>PrintWriter</code> object, and resets the Gameboard. 
+   */
    public void clearData()
    {
       PrintWriter dataFile = null;
@@ -295,7 +300,8 @@ public class Scoreboard extends JPanel
 
    
    /**
-   *Updates the colors of the scoreboard
+   *Updates the colors of the scoreboard based on what was selected in WordlePanel's <code>style</code> JComboBox
+   @param   style - The name of a game style
    */
    public void changeStyle(String style)
    {
@@ -328,7 +334,7 @@ public class Scoreboard extends JPanel
    
    /**
    *Sets the win percentage to the double input x
-   @param x    assigns x to winPercentage
+   @param x    sets winPercentage to x
    */
    public void setWinPercent(double x)
    {
@@ -337,7 +343,7 @@ public class Scoreboard extends JPanel
    
    /**
    *Sets the total win count to the int input x
-   @param x    assigns x to winCount
+   @param x    sets winCount to x
    */
    public void setWinCount(int x)
    {
@@ -346,7 +352,7 @@ public class Scoreboard extends JPanel
    
    /**
    *Sets the total game count to the int input x
-   @param x    assigns x to gameCount
+   @param x    sets gameCount to x
    */
    public void setGameCount(int x)
    {
