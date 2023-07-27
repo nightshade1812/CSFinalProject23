@@ -373,6 +373,7 @@ public class Gameboard extends JPanel
       }
       Scoreboard.getGameStatusLabel().setText("      ");
       Scoreboard.getAnswerDisplay().setText("      ");
+      wordGuess = "";
       gameEnd = false;
       win = false;
    }
@@ -524,29 +525,33 @@ public class Gameboard extends JPanel
    {
       public void keyPressed(KeyEvent e)
       {
-         int keyCode = e.getKeyCode();
-         String keyName = KeyEvent.getKeyText(keyCode);
-         keyName = keyName.toUpperCase();
+         if(row != 6) {
+            int keyCode = e.getKeyCode();
+            String keyName = KeyEvent.getKeyText(keyCode);
+            keyName = keyName.toUpperCase();
          //System.out.println(keyName);
          
-         if((!keyName.equals("BACKSPACE") && !keyName.equals("ENTER")) && Searcher.linear(validKeys, keyName)) {
-            if(space == 5)
-               return;
-            board[row][space].setText(" " + keyName + " ");
-            space++;
-            wordGuess = wordGuess + keyName;
-         }
-         else if(keyName.equals("BACKSPACE")) {
-            if(space == 0) {
-               space = 1;
-               wordGuess = wordGuess + " ";
+            if((!keyName.equals("BACKSPACE") && !keyName.equals("ENTER")) && Searcher.linear(validKeys, keyName)) {
+               if(space == 5)
+                  return;
+               board[row][space].setText(" " + keyName + " ");
+               space++;
+               wordGuess = wordGuess + keyName;
             }
-            board[row][space - 1].setText("   ");
-            space--;
-            wordGuess = wordGuess.substring(0, wordGuess.length() - 1);
+            else if(keyName.equals("BACKSPACE")) {
+               if(space == 0) {
+                  space = 1;
+                  wordGuess = wordGuess + " ";
+               }
+               board[row][space - 1].setText("   ");
+               space--;
+               wordGuess = wordGuess.substring(0, wordGuess.length() - 1);
+            }
+            else if(keyName.equals("ENTER"))
+               checkWord(wordGuess, answer, WordlePanel.getStyleName());
+            else
+               return;
          }
-         else if(keyName.equals("ENTER"))
-            checkWord(wordGuess, answer, WordlePanel.getStyleName());
          else
             return;
       }
