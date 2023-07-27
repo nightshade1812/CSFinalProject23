@@ -120,9 +120,9 @@ public class WordlePanel extends JPanel
       keyboard = new Keyboard();
       keyboard.setPreferredSize(new Dimension(500,180));
       keyboard.setOpaque(true);
-      keyboard.setBackground(Color.black);
+      keyboard.setBackground(Color.BLACK);
       reset = new JButton("New Game");
-      reset.setEnabled(false);
+      reset.setEnabled(true);
       reset.setFocusable(false);
       reset.addActionListener(new ResetListener());
       clear = new JButton("Clear Data");
@@ -202,7 +202,6 @@ public class WordlePanel extends JPanel
       scoreboard.update();
       gameboard.reset();
       keyboard.reset(styleName);
-      reset.setEnabled(false);
    }
    
    /**
@@ -274,12 +273,12 @@ public class WordlePanel extends JPanel
       if(styleName.equals("Classic")) {
          gameContainer.setBackground(Color.white);
          game.setBackground(new Color(238, 238, 238));
-         title.setForeground(Color.black);
-         styleTitle.setForeground(Color.black);
+         title.setForeground(Color.BLACK);
+         styleTitle.setForeground(Color.BLACK);
       }
       else if(styleName.equals("Neon")) {
-         game.setBackground(Color.black);
-         gameContainer.setBackground(Color.black);
+         game.setBackground(Color.BLACK);
+         gameContainer.setBackground(Color.BLACK);
          title.setForeground(Color.white);
          styleTitle.setForeground(Color.white);
       }
