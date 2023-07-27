@@ -54,7 +54,12 @@ public class Keyboard extends JPanel
       for(int k = 0; k < 26; k++) {
          keyboard[k].setFont(new Font("Arial", Font.BOLD, 35));
          keyboard[k].setOpaque(true);
-         keyboard[k].setBackground(Color.WHITE);
+         if(style.equals("Classic")) {
+            keyboard[k].setBackground(Color.WHITE);
+         }
+         else if(style.equals("Neon")) {
+            keyboard[k].setBackground(new Color(255, 240, 255));
+         }
          keyboard[k].setPreferredSize(keycap);
       }
       
@@ -63,7 +68,7 @@ public class Keyboard extends JPanel
          sub1.setBackground(new Color(238, 238, 238));
       }
       else if(style.equals("Neon")) {
-         sub1.setBackground(Color.BLACK);
+         sub1.setBackground(new Color(50, 50, 50));
       }
       sub1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
          
@@ -77,7 +82,7 @@ public class Keyboard extends JPanel
          sub2.setBackground(new Color(238, 238, 238));
       }
       else if(style.equals("Neon")) {
-         sub2.setBackground(Color.BLACK);
+         sub2.setBackground(new Color(50, 50, 50));
       }
       sub2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 4));
      
@@ -96,7 +101,7 @@ public class Keyboard extends JPanel
          sub3.setBackground(new Color(238, 238, 238));
       }
       else if(style.equals("Neon")) {
-         sub3.setBackground(Color.BLACK);
+         sub3.setBackground(new Color(50, 50, 50));
       }
       sub3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
       JLabel longBlank = new JLabel("                   ");
