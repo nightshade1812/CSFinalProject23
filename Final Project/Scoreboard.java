@@ -63,6 +63,26 @@ public class Scoreboard extends JPanel
    private Scanner dataReader;
    
    /**
+   *A string that stores the current style
+   */
+   private String style = WordlePanel.getStyle();
+   
+   /****************************
+   *Fills the panel with a color depending on the theme
+   */
+   public void paintComponent(Graphics g)
+   {
+      if(style.equals("Neon")) {
+         g.setColor(Color.BLACK);
+         g.fillRect(0, 0, 2000, 1800);
+      }
+      else if(style.equals("Classic")) {
+         g.setColor(new Color(238, 238, 238));
+         g.fillRect(0, 0, 2000, 1800);
+      }
+   }
+   
+   /**
    *Creates a Scoreboard instance containing 2 JLabel objects
    */
    public Scoreboard()
@@ -236,6 +256,7 @@ public class Scoreboard extends JPanel
    */
    public void changeStyle(String style)
    {
+      repaint();
       if(style.equals("Neon"))
       {
          winCountLabel.setBackground(new Color(255, 240, 255));
