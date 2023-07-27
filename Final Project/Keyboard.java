@@ -14,13 +14,29 @@ public class Keyboard extends JPanel
 */
    private static JLabel[] keyboard;
   
+  /**
+   *A string that stores the current style
+   */
+   private String style = WordlePanel.getStyle();
+   
+   /**
+   *A JPanel that serves as one row of the keyboard
+   */
+   private JPanel sub1, sub2, sub3;
+   
   /****************************
    *Fills the panel with white
    */
    public void paintComponent(Graphics g)
    {
-      g.setColor(Color.WHITE);
-      g.fillRect(0, 0, 600, 600);
+      if(style.equals("Classic")) {
+         g.setColor(new Color(238, 238, 238));
+         g.fillRect(0, 0, 600, 600);
+      }
+      else if(style.equals("Neon")) {
+         g.setColor(Color.BLACK);
+         g.fillRect(0, 0, 600, 600);
+      }
    }
    
 /**
@@ -42,7 +58,13 @@ public class Keyboard extends JPanel
          keyboard[k].setPreferredSize(keycap);
       }
       
-      JPanel sub1 = new JPanel();
+      sub1 = new JPanel();
+      if(style.equals("Classic")) {
+         sub1.setBackground(new Color(238, 238, 238));
+      }
+      else if(style.equals("Neon")) {
+         sub1.setBackground(Color.black);
+      }
       sub1.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
          
       for(int k = 0; k < 10; k++)
@@ -50,7 +72,13 @@ public class Keyboard extends JPanel
        
       add(sub1, BorderLayout.NORTH);   
       
-      JPanel sub2 = new JPanel();
+      sub2 = new JPanel();
+      if(style.equals("Classic")) {
+         sub2.setBackground(new Color(238, 238, 238));
+      }
+      else if(style.equals("Neon")) {
+         sub2.setBackground(Color.black);
+      }
       sub2.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 4));
      
       
@@ -63,7 +91,13 @@ public class Keyboard extends JPanel
       
       add(sub2, BorderLayout.CENTER);
          
-      JPanel sub3 = new JPanel();
+      sub3 = new JPanel();
+      if(style.equals("Classic")) {
+         sub3.setBackground(new Color(238, 238, 238));
+      }
+      else if(style.equals("Neon")) {
+         sub3.setBackground(Color.black);
+      }
       sub3.setLayout(new FlowLayout(FlowLayout.LEFT, 5, 5));
       JLabel longBlank = new JLabel("                   ");
       sub3.add(longBlank);
@@ -142,7 +176,7 @@ public class Keyboard extends JPanel
             keyboard[i].setBackground(new Color(201, 180, 88)); //Classic Wordle yellow
          else if(style.equals("Neon"))
             keyboard[i].setBackground(new Color(255, 196, 0)); //Neon orangeish yellow
-
+      
          keyboard[i].setForeground(Color.WHITE);
       }
       else {
@@ -150,52 +184,61 @@ public class Keyboard extends JPanel
             keyboard[i].setBackground(new Color(106, 170, 100)); //Classic Wordle green
          else if(style.equals("Neon"))
             keyboard[i].setBackground(new Color(12, 245, 190)); //Neon turquoiseish green
-
+      
          keyboard[i].setForeground(Color.WHITE);
       }
    }
    
-   public static void changeStyle(String style)
+   public void changeStyle(String stylein)
    {
-         if(style.equals("Neon"))
+      style = stylein;
+      if(style.equals("Neon"))
+      {
+         for(int k = 0; k < keyboard.length; k++)
          {
-            for(int k = 0; k < keyboard.length; k++)
+            if(keyboard[k].getBackground().equals(new Color(106, 170, 100)))  // Classic Wordle Green
+               keyboard[k].setBackground(new Color(12, 245, 190)); //Neon turquoisish green
+                  
+            else if(keyboard[k].getBackground().equals(new Color(201, 180, 88))) // Classic Wordle Yellow
+               keyboard[k].setBackground(new Color(255, 196, 0)); //Neon orangeish yellow
+                  
+            else if(keyboard[k].getBackground().equals(new Color(120, 124, 126))) //Classic Wordle cool grey
             {
-               if(keyboard[k].getBackground().equals(new Color(106, 170, 100)))  // Classic Wordle Green
-                  keyboard[k].setBackground(new Color(12, 245, 190)); //Neon turquoisish green
-                  
-               else if(keyboard[k].getBackground().equals(new Color(201, 180, 88))) // Classic Wordle Yellow
-                  keyboard[k].setBackground(new Color(255, 196, 0)); //Neon orangeish yellow
-                  
-               else if(keyboard[k].getBackground().equals(new Color(120, 124, 126))) //Classic Wordle cool grey
-               {
-                 keyboard[k].setBackground(new Color(100, 10, 190)); //Neon blurple
-               }
-               else if(keyboard[k].getBackground().equals(Color.white))
-               {
-                keyboard[k].setBackground(new Color(255, 240, 255)); //Neon light pink
-               }
+               keyboard[k].setBackground(new Color(100, 10, 190)); //Neon blurple
+            }
+            else if(keyboard[k].getBackground().equals(Color.white))
+            {
+               keyboard[k].setBackground(new Color(255, 240, 255)); //Neon light pink
             }
          }
-         else if(style.equals("Classic"))
+         repaint();
+         sub1.setBackground(Color.black);
+         sub2.setBackground(Color.black);
+         sub3.setBackground(Color.black);
+      }
+      else if(style.equals("Classic"))
+      {
+         for(int k = 0; k < keyboard.length; k++)
          {
-            for(int k = 0; k < keyboard.length; k++)
+            if(keyboard[k].getBackground().equals(new Color(12, 245, 190)))  //Neon turquoisish green
+               keyboard[k].setBackground(new Color(106, 170, 100)); // Classic Wordle Green 
+                  
+            else if(keyboard[k].getBackground().equals(new Color(255, 196, 0))) //Neon orangeish yellow
+               keyboard[k].setBackground(new Color(201, 180, 88)); // Classic Wordle Yellow
+                  
+            else if(keyboard[k].getBackground().equals(new Color(100, 10, 190))) //Neon blurple
             {
-               if(keyboard[k].getBackground().equals(new Color(12, 245, 190)))  //Neon turquoisish green
-                  keyboard[k].setBackground(new Color(106, 170, 100)); // Classic Wordle Green 
-                  
-               else if(keyboard[k].getBackground().equals(new Color(255, 196, 0))) //Neon orangeish yellow
-                  keyboard[k].setBackground(new Color(201, 180, 88)); // Classic Wordle Yellow
-                  
-               else if(keyboard[k].getBackground().equals(new Color(100, 10, 190))) //Neon blurple
-               {
-                 keyboard[k].setBackground(new Color(120, 124, 126)); //Classic Wordle cool grey
-               }
-               else if(keyboard[k].getBackground().equals(new Color(255, 240, 255)))//Neon light pink
-               {
-                keyboard[k].setBackground(Color.white); 
-               }
+               keyboard[k].setBackground(new Color(120, 124, 126)); //Classic Wordle cool grey
+            }
+            else if(keyboard[k].getBackground().equals(new Color(255, 240, 255)))//Neon light pink
+            {
+               keyboard[k].setBackground(Color.white); 
             }
          }
+      }
+      repaint();
+      sub1.setBackground(new Color(238, 238, 238));
+      sub2.setBackground(new Color(238, 238, 238));
+      sub3.setBackground(new Color(238, 238, 238));
    }
 }
