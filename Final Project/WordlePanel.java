@@ -1,301 +1,513 @@
 import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 import java.awt.event.*; //Listener class
+import java.util.*; //Scanner class
+import java.io.*; //File class
 
-/*******
-*The WordlePanel class serves as the organizing panel for the game, containing several subpanels and menus/player options. 
+/**
+*The Gameboard class is the main game container. The main player input happens here via the keyboard. The word is chosen and checked 
+* against the player's input via several methods. 
 */
-
-public class WordlePanel extends JPanel
+public class Gameboard extends JPanel
 {
    /**
-   *The WordlePanel' Gameboard
-   @see Gameboard
+   *A JLabel matrix within a Gameboard instance, will display a word on each row
    */
-   private static Gameboard gameboard;
+   private static JLabel[][] board;
    
    /**
-   *The WordlePanel' Scoreboard
-   @see Scoreboard
+   *A string that stores the word to be guessed
    */
-   private static Scoreboard scoreboard;
+   private static String answer;
    
    /**
-   *The WordlePanel' Keyboard
-   @see Keyboard
+   *A string that stores the current word being guessed
    */
-   private static Keyboard keyboard;
+   private static String wordGuess;
    
    /**
-   *A JButton that resets the WordlePanel and its subpanels
-   @see JButton
+   *An int that stores the amount of guesses used
    */
-   private static JButton reset;
+   private static int guess;
    
    /**
-   *A JButton that clears all data history and resets the game
-   @see JButton
+   *An int that stores the row the Wordle is typing in
    */
-   private static JButton clear;
+   private static int row;
    
    /**
-   *An int that determines the amount of guesses in the game
-   */   
-   //guessLimit starts at 6, as is traditional for Wordle
-   private int guessLimit = 6;
+   *An int that stores which space is the one to be typed in on the next key input
+   */
+   private static int space;
    
    /**
-   * ///////////////////INSERT COMMENT HERE /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+   *A boolean that stores whether or not the game has ended in a win
    */
-   private static JComboBox style;
+   private static boolean win;
    
    /**
-   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   *A string array that stores all valid key names
    */
-   private static JLabel title;
+   private String[] validKeys;
    
    /**
-   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   *A scanner that will be used to search a file and find a random word to be the answer.
    */
-   private static JLabel styleTitle;
+   private Scanner answerSelect;
    
    /**
-   * /////////////////INSERT COMMENT HERE//////////////////////////////////////////////////////////////////////////////////////////////////////
+   *A scanner that will be used to search a file and find whether or not a word is a valid guess.
    */
-   private static String styleName;
+   private Scanner wordFinder;
    
    /**
-   * //////////////////INSERT COMMENT HERE////////////////////////////////////////////////////////////////////////////////////////////////
+   *A string that stores the current style
    */
-   private static JPanel game, gameContainer;
-   
+   private String style = WordlePanel.getStyle();
+
    /****************************
    *Fills the panel with a color depending on the theme
    */
    public void paintComponent(Graphics g)
    {
-      if(styleName.equals("Classic")) {
-         g.setColor(Color.white);
-         g.fillRect(0, 0, 2000, 1800);
-      }
-      else if(styleName.equals("Neon")) {
+      if(style.equals("Neon")) {
          g.setColor(Color.BLACK);
          g.fillRect(0, 0, 2000, 1800);
       }
+      else if(style.equals("Classic")) {
+         g.setColor(new Color(238, 238, 238));
+         g.fillRect(0, 0, 2000, 1800);
+      }
    }
-   
-   public static String getStyle()
-   {
-      return styleName;
-   }
-   
-   /****************************
-   *Creates a WordlePanel instance containing a Gameboard object, a Scoreboard object, a KeyBoard object, and a JButton object
-   */
-   public WordlePanel()
-   {
-      styleName = "Classic";
-   
-      GridBagLayout gridbag = new GridBagLayout();
-      GridBagConstraints c = new GridBagConstraints();
-      
-      setLayout(gridbag);
-      setOpaque(true);
-      setBackground(Color.green);
-      
-      gameContainer = new JPanel();
-      gameContainer.setLayout(new FlowLayout());
-      gameContainer.setOpaque(true);
-      gameContainer.setBackground(Color.white);
-      
-      title = new JLabel("     Wordle     ");
-      title.setFont(new Font("Arial", Font.BOLD, 40));
-      gameContainer.add(title);
-   
-      game = new JPanel();
-      game.setLayout(new BoxLayout(game, BoxLayout.Y_AXIS));
-      game.setOpaque(true);
-      game.setBackground(new Color(238, 238, 238));
-         
-      keyboard = new Keyboard();
-      keyboard.setPreferredSize(new Dimension(500,180));
-      keyboard.setOpaque(true);
-      keyboard.setBackground(Color.black);
-      reset = new JButton("New Game");
-      reset.setEnabled(false);
-      reset.setFocusable(false);
-      reset.addActionListener(new ResetListener());
-      clear = new JButton("Clear Data");
-      clear.setEnabled(true);
-      clear.addActionListener(new ClearListener());
-      clear.setFocusable(false);
-      gameboard = new Gameboard();
-      scoreboard = new Scoreboard();      
-          
-      game.add(gameboard);
-      game.add(keyboard);
-                 
-      gameContainer.add(game);
-      
-      c.fill = GridBagConstraints.VERTICAL;
-      c.weightx = 0.0;
-      c.weighty = 1.0;
-      c.gridx = 0;
-      c.gridy = 0;
-      c.gridheight = 5;
-      add(gameContainer, c);
-           
-      c.fill = GridBagConstraints.NONE;
-      c.weightx = 0.5;
-      c.weighty = 0.1;
-      c.gridx = 1;
-      c.gridy = 3;
-      c.gridheight = 1;
-      c.anchor = GridBagConstraints.PAGE_START;
-      add(reset, c);
-      
-      styleTitle = new JLabel("Choose a Style:");
-      styleTitle.setFont(new Font("Arial", Font.BOLD, 20));
-      
-      c.weightx = 1.0;
-      c.gridx = 1;
-      c.gridy = 1;
-      c.anchor = GridBagConstraints.LAST_LINE_START;
-      add(styleTitle, c);
-      
-      String[] list = {"Classic", "Neon"};
-      style = new JComboBox(list);       // for some reason this line gives the "unchecked or unsafe operations" message
-      style.setFocusable(false);
-      style.addActionListener(new StyleListener());
-      
-      c.fill = GridBagConstraints.HORIZONTAL;
-      c.weightx = 0.5;
-      c.weighty = 0.5;
-      c.gridx = 1;
-      c.gridy = 2; 
-      c.anchor = GridBagConstraints.FIRST_LINE_START;
-      add(style,c);
-          
-      c.fill = GridBagConstraints.BOTH;
-      c.gridx = 1;
-      c.gridy = 0;
-      c.weighty = 1;
-      add(scoreboard, c);   
-      
-      c.fill = GridBagConstraints.NONE;
-      c.weightx = 0.5;
-      c.weighty = 1.2;
-      c.gridx = 1;
-      c.gridy = 4;
-      c.gridheight = 1;
-      c.anchor = GridBagConstraints.PAGE_START;
-      add(clear, c);  
-   } 
    
    /**
-   *Resets the Gameboard and the Keyboard by calling their reset methods
-   @see Gameboard.reset()
-   @see Keyboard.reset()
+   *Creates a new Gameboard object with a JLabel matrix
+   */
+   public Gameboard()
+   {
+      Scanner dataReader = null;
+      
+      setLayout(new GridLayout(6, 5, 2, 2));
+      
+      board = new JLabel[6][5];
+      
+      for(int r = 0; r < board.length; r++)
+         for(int c = 0; c < board[0].length; c++)
+         {
+            board[r][c] = new JLabel("     ", SwingConstants.CENTER);
+            board[r][c].setFont(new Font("Arial", Font.BOLD, 50));
+            board[r][c].setOpaque(true);
+            board[r][c].setBackground(Color.WHITE);
+            add(board[r][c]);
+         }
+      
+      try {
+         dataReader = new Scanner(new File("stats.txt"));
+      }
+      catch(FileNotFoundException e) {
+         
+      }
+      
+      for(int i = 0; i < 3; i++)
+         dataReader.nextLine();
+      
+      answer = dataReader.nextLine();
+      
+      while(dataReader.hasNext() == true) {
+         String word = dataReader.nextLine();
+         if(word.equals("null"))
+            break;
+         else {
+            for(int i = 0; i < word.length(); i++) {
+               board[row][i].setText(word.charAt(i) + "");
+            }
+            if(checkWordValid(word) == true)
+               checkWord(word, answer, WordlePanel.getStyleName());
+            else
+               for(int i = 0; i < word.length(); i++) {
+                  board[row][i].setText("     ");
+               }
+         }
+      }
+      System.out.println(answer);
+      wordGuess = "";
+      validKeys = new String[28];
+      fillValidKeyCodeArray(validKeys);
+      addKeyListener(new KeyDetector());
+      setFocusable(true);
+   }
+  
+   /**
+   *Randomly selects a 5 letter word from answers.txt and assigns it to answer
+   */ 
+   public void assignAnswer()
+   {
+      int line = (int)(Math.random() * 2039 + 1);
+      try {
+         answerSelect = new Scanner(new File("answers.txt"));
+      }
+      catch(FileNotFoundException e) {
+         System.out.println("wrong file oopsies");
+         System.exit(0);
+      }
+      for(int i = 0; i < line; i++)
+         answer = answerSelect.next();
+      System.out.println(answer);
+   }
+   
+   /**
+   *Checks if the word that the user inputs is a valid word. Also checks for special cases (incorrect word length, special characters, etc.). Returns a boolean value
+   @return     boolean
+   */
+   public boolean checkWordValid(String input)
+   {
+      try {
+         wordFinder = new Scanner(new File("guesses.txt"));
+      }
+      catch(FileNotFoundException e) {
+         System.out.println("wrong file oopsies");
+         System.exit(0);
+      }
+      int count = 0;
+      String[] array = new String[12947];
+      for(int i = 0; i < 12947; i++)
+         array[i] = wordFinder.nextLine();
+         
+      try {
+         if(input.length() != 5)
+            throw new StringBadLengthException("String is not five characters - try again");
+      }
+      catch(StringBadLengthException e) {
+         return false;
+      }
+      
+      if(Searcher.linear(array, input.toLowerCase()))
+         return true;
+      return false;
+   }
+   
+   /**
+   *Checks if the word that the user inputs is equal to answer and will change the colors of Gameboard squares or display a winner message accordingly
+   */
+   public void checkWord(String input, String answerin, String style)
+   {
+      if(checkWordValid(input)) {
+         SoundEffect checker = new SoundEffect("pageturn.wav");
+         checker.play();
+         Scoreboard.getGameStatusLabel().setText("     ");
+         answerin = answerin.toUpperCase();
+         
+         String[] doubleLettersChecker = new String[5];
+         
+         char[] inputChars = new char[5];
+         char[] answerChars = new char[5];
+         for(int i = 0; i < input.length(); i++) {
+            inputChars[i] = input.charAt(i);
+            answerChars[i] = answerin.charAt(i);
+         }
+         
+         for(int i = 0; i < input.length(); i++) {
+            if(inputChars[i] == answerChars[i]) {
+               if(style.equals("Classic"))
+                  board[row][i].setBackground(new Color(106, 170, 100));
+               else if(style.equals("Neon"))
+                  board[row][i].setBackground(new Color(12, 245, 190));
+               doubleLettersChecker[i] = "green";
+               board[row][i].setForeground(Color.WHITE);
+               Keyboard.updateKeyboard("" + inputChars[i], 2, WordlePanel.getStyleName());
+            }
+            else if(answerin.contains("" + inputChars[i]) && inputChars[i] != answerChars[i]) {
+               if(style.equals("Classic"))
+                  board[row][i].setBackground(new Color(201, 180, 88));
+               else if(style.equals("Neon"))
+                  board[row][i].setBackground(new Color(255, 196, 0));
+               doubleLettersChecker[i] = "yellow";
+               board[row][i].setForeground(Color.WHITE);
+               Keyboard.updateKeyboard("" + inputChars[i], 1, WordlePanel.getStyleName());
+            }
+            else if(inputChars[i] != answerChars[i] && !answer.contains("" + inputChars[i])) {
+               if(style.equals("Classic"))
+                  board[row][i].setBackground(new Color(120, 124, 126));
+               else if(style.equals("Neon"))
+                  board[row][i].setBackground(new Color(100, 10, 190));
+               doubleLettersChecker[i] = "gray";
+               board[row][i].setForeground(Color.WHITE);
+               Keyboard.updateKeyboard("" + inputChars[i], 0, WordlePanel.getStyleName());
+            }
+         }
+         int charCounter = 0;
+         boolean skipChars = false;
+         String doublesInput = DoubleLetterReader.readDoubles(inputChars);
+         String doublesAnswer = DoubleLetterReader.readDoubles(answerChars);
+         
+         for(int d = 0; d < doublesInput.length(); d++) {
+            if(doublesInput.length() == 0)
+               break;
+            for(int i = 0; i < 5; i++) {
+               if(answerin.contains(inputChars[i] + "")) {
+                  if(d != 0) {
+                     if(input.charAt(i) != doublesInput.charAt(d - 1)) {
+                        if(DoubleLetterReader.countOfChar(inputChars, inputChars[i]) > DoubleLetterReader.countOfChar(answerChars, answerChars[i])) {
+                           int index = input.indexOf(inputChars[i] + "", i);
+                           if(answerin.contains(inputChars[i] + ""))
+                              charCounter++;
+                           if(skipChars == true) {
+                              if(answerin.contains(inputChars[i] + "")) {
+                                 if(style.equals("Classic"))
+                                    board[row][i].setBackground(new Color(120, 124, 126));
+                                 else if(style.equals("Neon"))
+                                    board[row][i].setBackground(new Color(100, 10, 190));
+                              }
+                           }
+                           else {
+                              if(inputChars[i] == answerChars[i]) {
+                                 if(style.equals("Classic"))
+                                    board[row][i].setBackground(new Color(106, 170, 100));
+                                 else if(style.equals("Neon"))
+                                    board[row][i].setBackground(new Color(12, 245, 190));
+                                 Keyboard.updateKeyboard("" + inputChars[i], 2, WordlePanel.getStyleName());
+                              }
+                              else if(answerin.contains("" + inputChars[i]) && inputChars[i] != answerChars[i]) {
+                                 if(style.equals("Classic"))
+                                    board[row][i].setBackground(new Color(201, 180, 88));
+                                 else if(style.equals("Neon"))
+                                    board[row][i].setBackground(new Color(255, 196, 0));
+                                 Keyboard.updateKeyboard("" + inputChars[i], 1, WordlePanel.getStyleName());
+                              }
+                           }
+                           if(charCounter >= DoubleLetterReader.countOfChar(answerChars, answerChars[i])) {
+                              skipChars = true;
+                           }
+                        }
+                     }
+                  }
+                  else if(d == 0) {
+                     if(DoubleLetterReader.countOfChar(inputChars, inputChars[i]) > DoubleLetterReader.countOfChar(answerChars, answerChars[i])) {
+                        int index = input.indexOf(inputChars[i] + "", i);
+                        if(answerin.contains(inputChars[i] + ""))
+                           charCounter++;
+                        if(skipChars == true) {
+                           if(answerin.contains(inputChars[i] + "")) {
+                              if(style.equals("Classic"))
+                                 board[row][i].setBackground(new Color(120, 124, 126));
+                              else if(style.equals("Neon"))
+                                 board[row][i].setBackground(new Color(100, 10, 190));
+                           }
+                        }
+                        if(charCounter >= DoubleLetterReader.countOfChar(answerChars, answerChars[i])) {
+                           skipChars = true;
+                        }
+                     }
+                  }
+               }
+            }
+            charCounter = 0;
+            skipChars = false;
+         }
+         
+         space = 0;
+         row++;
+         guess++;
+         if(input.equalsIgnoreCase(answerin)) {
+            win = true;
+            winner();
+            Scoreboard.getGameStatusLabel().setText("You win! Congratulations.");
+            SoundEffect winner = new SoundEffect("win.wav");
+            winner.play();
+         }
+         else if(guess == 6) {
+            win = false;
+            winner();
+            Scoreboard.getGameStatusLabel().setText("Sorry, you lost! The word was: ");
+            Scoreboard.getAnswerDisplay().setText(answer.toUpperCase());
+            SoundEffect loser = new SoundEffect("loser.wav");
+            loser.play();
+         }
+         wordGuess = "";
+      }
+      else
+         Scoreboard.getGameStatusLabel().setText("Word invalid. Please try again.");
+   }
+   
+   /**
+   *Updates the JLabel matrix to display the letter that the player has typed
+   */
+   public void inputKeyChar(char c)
+   {
+      board[row][space].setText("" + c);
+   }
+   
+   /**
+   *Sets the entire JLabel matrix to blank, resets guess and answer
    */
    public void reset()
    {
-      scoreboard.update();
-      gameboard.reset();
-      keyboard.reset(styleName);
-      reset.setEnabled(false);
-   }
-   
-   /**
-   *Sets the amount of guesses per game to the input x
-   @param x    assigns x to guessLimit
-   */
-   public void setGuessLimit(int x)
-   {
-      guessLimit = x;
-   }
-   
-   /**
-   *Returns the total amount of guesses in the current game
-   @return     guessLimit
-   */
-   public int getGuessLimit()
-   {
-      return guessLimit;
-   }
-   
-   /**
-   *Returns the reset JButton for use in other classes
-   @return     reset
-   */
-   public static JButton getResetButton()
-   {
-      return reset;
-   }
-
-   /**
-   *Returns the name of the current style for use in other classes
-   @return     styleName
-   */
-   public static String getStyleName()
-   {
-      return styleName;
-   }
-   
-   //listener for the reset button
-   private class ResetListener implements ActionListener
-   {
-      public void actionPerformed(ActionEvent e)
-      {
-         //calls the WordlePanel's reset method
-         
-         SoundEffect reset = new SoundEffect("buttonclick.wav");
-         reset.play();
-         reset();
+      assignAnswer();
+      guess = row = space = 0;
+      for(int r = 0; r < 6; r++) {
+         for(int c = 0; c < 5; c++) {
+            board[r][c].setBackground(Color.WHITE);
+            board[r][c].setForeground(Color.BLACK);
+            board[r][c].setText("     ");
+         }
       }
+      Scoreboard.getGameStatusLabel().setText("      ");
+      Scoreboard.getAnswerDisplay().setText("      ");
    }
    
-   //listener for the clear button
-   private class ClearListener implements ActionListener
+   /**
+   *
+   */
+   public void changeStyle(String stylein)
    {
-      public void actionPerformed(ActionEvent e)
-      {
-         SoundEffect clear = new SoundEffect("buttonclick.wav");
-         clear.play();
-         scoreboard.clearData();
-         keyboard.reset(styleName);
-         gameboard.reset();
-      }
-   }
-   
-   public void changeStyle(String s)
-   {
-      styleName = s;
+      style = stylein;
       repaint();
-      if(styleName.equals("Classic")) {
-         gameContainer.setBackground(Color.white);
-         game.setBackground(new Color(238, 238, 238));
-         title.setForeground(Color.black);
-         styleTitle.setForeground(Color.black);
+      if(style.equals("Neon"))
+      {
+         for(int r = 0; r < board.length; r++)
+            for(int c = 0; c < board[0].length; c++)
+            {
+               if(board[r][c].getBackground().equals(new Color(106, 170, 100)))  // Classic Wordle Green
+                  board[r][c].setBackground(new Color(12, 245, 190)); //Neon turquoisish green
+                     
+               else if(board[r][c].getBackground().equals(new Color(201, 180, 88))) // Classic Wordle Yellow
+                  board[r][c].setBackground(new Color(255, 196, 0)); //Neon orangeish yellow
+                     
+               else if(board[r][c].getBackground().equals(new Color(120, 124, 126))) //Classic Wordle cool grey
+               {
+                  board[r][c].setBackground(new Color(100, 10, 190)); //Neon blurple
+               }
+               else if(board[r][c].getBackground().equals(Color.white))
+               {
+                  board[r][c].setBackground(new Color(255, 240, 255)); //Neon light pink
+               }
+            }
       }
-      else if(styleName.equals("Neon")) {
-         game.setBackground(Color.black);
-         gameContainer.setBackground(Color.black);
-         title.setForeground(Color.white);
-         styleTitle.setForeground(Color.white);
+      else if(style.equals("Classic"))
+      {
+         for(int r = 0; r < board.length; r++)
+            for(int c = 0; c < board[0].length; c++)
+            {
+               if(board[r][c].getBackground().equals(new Color(12, 245, 190)))  //Neon turquoisish green
+                  board[r][c].setBackground(new Color(106, 170, 100)); // Classic Wordle Green 
+                     
+               else if(board[r][c].getBackground().equals(new Color(255, 196, 0))) //Neon orangeish yellow
+                  board[r][c].setBackground(new Color(201, 180, 88)); // Classic Wordle Yellow
+                     
+               else if(board[r][c].getBackground().equals(new Color(100, 10, 190))) //Neon blurple
+               {
+                  board[r][c].setBackground(new Color(120, 124, 126)); //Classic Wordle cool grey
+               }
+               else if(board[r][c].getBackground().equals(new Color(255, 240, 255)))//Neon light pink
+               {
+                  board[r][c].setBackground(Color.white); 
+               }
+            }
       }
-      gameboard.changeStyle(s);
-      keyboard.changeStyle(s);
-      scoreboard.changeStyle(s);    
    }
    
-   //listener for the dropdown menu
-   private class StyleListener implements ActionListener
+   /**
+   *Displays a message depending on whether the player has won or lost
+   */
+   public static boolean winner()
    {
-      public void actionPerformed(ActionEvent e)
+      WordlePanel.getResetButton().setEnabled(true);
+      if(win == true)
+         return true;
+      return false;
+   }
+   
+   /**
+   *Returns the current answer to the Wordle
+   */
+   public static String getAnswer()
+   {
+      return answer;
+   }
+   
+   /**
+   *Manually fills the array of valid key codes
+   */
+   public void fillValidKeyCodeArray(String[] arr)
+   {
+      arr[0] = "Q";
+      arr[1] = "W";
+      arr[2] = "E";
+      arr[3] = "R";
+      arr[4] = "T";
+      arr[5] = "Y";
+      arr[6] = "U";
+      arr[7] = "I";
+      arr[8] = "O";
+      arr[9] = "P";
+      arr[10] = "A";
+      arr[11] = "S";
+      arr[12] = "D";
+      arr[13] = "F";
+      arr[14] = "G";
+      arr[15] = "H";
+      arr[16] = "J";
+      arr[17] = "K";
+      arr[18] = "L";
+      arr[19] = "Z";
+      arr[20] = "X";
+      arr[21] = "C";
+      arr[22] = "V";
+      arr[23] = "B";
+      arr[24] = "N";
+      arr[25] = "M";
+      arr[26] = "⏎";
+      arr[27] = "⌫";
+   }
+   
+   /**
+   *Returns the current board matrix
+   @return     JLabel[][]
+   */
+   public static JLabel[][] getBoard()
+   {
+      return board;
+   }
+   
+   /**
+   *Returns the current guess number
+   @return     int
+   */
+   public static int getGuess()
+   {
+      return guess;
+   }
+   
+   //the key listener that we will use to update the board as keys are typed
+   private class KeyDetector extends KeyAdapter
+   {
+      public void keyPressed(KeyEvent e)
       {
-         JComboBox source = (JComboBox)e.getSource();
-         String style = source.getSelectedItem().toString();
-         changeStyle(style);
+         int keyCode = e.getKeyCode();
+         String keyName = KeyEvent.getKeyText(keyCode);
+         keyName = keyName.toUpperCase();
+         //System.out.println(keyName);
+         
+         if((!keyName.equals("⌫") && !keyName.equals("⏎")) && Searcher.linear(validKeys, keyName)) {
+            if(space == 5)
+               return;
+            board[row][space].setText(" " + keyName + " ");
+            space++;
+            wordGuess = wordGuess + keyName;
+         }
+         else if(keyName.equals("⌫")) {
+            if(space == 0) {
+               space = 1;
+               wordGuess = wordGuess + " ";
+            }
+            board[row][space - 1].setText("   ");
+            space--;
+            wordGuess = wordGuess.substring(0, wordGuess.length() - 1);
+         }
+         else if(keyName.equals("⏎"))
+            checkWord(wordGuess, answer, WordlePanel.getStyleName());
+         else
+            return;
       }
    }
 }
