@@ -1,3 +1,5 @@
+//Created by Satik Karki and Sarah Trainer, final version completed 7/27/2023
+
 import javax.swing.*; //JPanel class and other graphics objects
 import java.awt.*; //Layouts and other graphics objects
 
@@ -25,7 +27,9 @@ public class Keyboard extends JPanel
    private JPanel sub1, sub2, sub3;
    
 /**
-*Creates a Keyboard instance with a JLabel array
+*Creates a Keyboard instance using a JLabel array, a <code>FlowLayout</code>, and 3 <code>GridLayout</code>s. 
+@see  FlowLayout
+@see  GridLayout
 */
    public Keyboard()
    {
@@ -99,9 +103,9 @@ public class Keyboard extends JPanel
    }
 
 /**
-*Adds JLabels to keyboard with letters in traditional QWERTY order
+*Adds JLabels to <code>keyboard</code> with letters in traditional QWERTY order
+@param   arr - The JLabel array to be filled
 */
-
    public static void assignKeys(JLabel[] arr)
    {
       arr[0] = new JLabel("Q", SwingConstants.CENTER);
@@ -133,8 +137,9 @@ public class Keyboard extends JPanel
    }  
 
 /**
-*Resets the colors of a Keyboard object
-*/    
+*Resets the colors of a Keyboard object back to the default color, depending on the game style.
+@param   style - The name of a game style
+*/      
    public void reset(String style)
    {
       for(int k = 0; k < 26; k++) {
@@ -148,7 +153,10 @@ public class Keyboard extends JPanel
  
 /**
 *Updates the colors of individual letters on the QWERTY keyboard display depending on the player's guesses. 
-*/  
+@param   letter - The letter that the user has typed in
+@param   matchLevel - Used to determine what color to change the keyboard to. 0 = wrong letter, 1 = has that letter, 2 = letter in right spot
+@param   style - The name of a game style
+*/   
    public static void updateKeyboard(String letter, int matchLevel, String style)
    {
       String alphabet = "QWERTYUIOPASDFGHJKLZXCVBNM";
@@ -178,7 +186,11 @@ public class Keyboard extends JPanel
          keyboard[i].setForeground(Color.WHITE);
       }
    }
-   
+
+   /**
+   *Changes the visual colors of a Keyboard based on what has been selected in WordlePanel's <code>style</code> JComboBox
+   @param   style - The name of a game style
+   */
    public void changeStyle(String stylein)
    {
       style = stylein;
