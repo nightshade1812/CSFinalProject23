@@ -46,6 +46,12 @@ public class Gameboard extends JPanel
    private static boolean win;
    
    /**
+   *A boolean that stores whether or not the game has ended
+   */
+   private static boolean gameEnd;
+   
+   
+   /**
    *A string array that stores all valid key names
    */
    private String[] validKeys;
@@ -309,6 +315,7 @@ public class Gameboard extends JPanel
          row++;
          guess++;
          if(input.equalsIgnoreCase(answerin)) {
+            gameEnd = true;
             win = true;
             winner();
             Scoreboard.getGameStatusLabel().setText("You win! Congratulations.");
@@ -316,6 +323,7 @@ public class Gameboard extends JPanel
             winner.play();
          }
          else if(guess == 6) {
+            gameEnd = true;
             win = false;
             winner();
             Scoreboard.getGameStatusLabel().setText("Sorry, you lost! The word was: ");
@@ -353,6 +361,8 @@ public class Gameboard extends JPanel
       }
       Scoreboard.getGameStatusLabel().setText("      ");
       Scoreboard.getAnswerDisplay().setText("      ");
+      gameEnd = false;
+      win = false;
    }
    
    /**
@@ -415,6 +425,14 @@ public class Gameboard extends JPanel
       if(win == true)
          return true;
       return false;
+   }
+   
+   /**
+   *Returns the current status of the game
+   */
+   public static boolean getGameEnd()
+   {
+      return gameEnd;
    }
    
    /**
