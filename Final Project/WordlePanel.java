@@ -191,6 +191,10 @@ public class WordlePanel extends JPanel
       
       styleTitle = new JLabel("Choose a Style:");
       styleTitle.setFont(new Font("Arial", Font.BOLD, 20));
+      if(styleName.equals("Neon"))
+         styleTitle.setForeground(Color.WHITE);
+      else if(styleName.equals("Classic"))
+         styleTitle.setForeground(Color.BLACK);
       
       c.weightx = 1.0;
       c.gridx = 1;
