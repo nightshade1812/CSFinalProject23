@@ -134,7 +134,7 @@ public class Gameboard extends JPanel
          }
       }
       dataReader.close();
-      System.out.println(answer);
+      //System.out.println(answer);
       wordGuess = "";
       validKeys = new String[28];
       fillValidKeyCodeArray(validKeys);
@@ -157,7 +157,7 @@ public class Gameboard extends JPanel
       }
       for(int i = 0; i < line; i++)
          answer = answerSelect.next();
-      System.out.println(answer);
+      //System.out.println(answer);
    }
    
    /**
@@ -360,8 +360,14 @@ public class Gameboard extends JPanel
       guess = row = space = 0;
       for(int r = 0; r < 6; r++) {
          for(int c = 0; c < 5; c++) {
-            board[r][c].setBackground(Color.WHITE);
-            board[r][c].setForeground(Color.BLACK);
+            if(style.equals("Classic")) {
+               board[r][c].setBackground(Color.WHITE);
+               board[r][c].setForeground(Color.BLACK);
+            }
+            else if(style.equals("Neon")) {
+               board[r][c].setBackground(new Color(255, 240, 255));
+               board[r][c].setForeground(Color.BLACK);
+            }
             board[r][c].setText("     ");
          }
       }
